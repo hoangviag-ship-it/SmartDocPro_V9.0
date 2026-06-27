@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 
 import AIChatWidget from './components/AI/AIChatWidget.jsx';
-import WordEditorModal from "./components/Modals/WordEditorModal";
-import UnknownVarsModal from "./components/Modals/UnknownVarsModal";
-import VariablesLibraryModal from "./components/Modals/VariablesLibraryModal";
+const WordEditorModal = React.lazy(() => import("./components/Modals/WordEditorModal"));
+const UnknownVarsModal = React.lazy(() => import("./components/Modals/UnknownVarsModal"));
+const VariablesLibraryModal = React.lazy(() => import("./components/Modals/VariablesLibraryModal"));
 import { inferVariableType, resolveSynonym, formatCurrency } from "./utils/variableUtils";
 import ReactDOM from "react-dom/client";
 import { validateTagName } from "./utils/tagUtils";
@@ -51,16 +51,16 @@ import ExportTab from './components/Tabs/ExportTab';
 import ExcelDataTab from './components/Tabs/ExcelDataTab';
 import MappingTable from "./components/Tabs/MappingTable";
 import WBSDirectoryPane from "./components/_wip/tabs/WBSDirectoryPane";
-import ProcessModal from "./components/Modals/ProcessModal";
-import ApprovalHistoryModal from "./components/Modals/ApprovalHistoryModal";
-import RenameProcessNodeModal from "./components/Modals/RenameProcessNodeModal";
-import AddStageModal from "./components/Modals/AddStageModal";
-import ProjectModal from "./components/Modals/ProjectModal";
-import SettingsModal from "./components/Modals/SettingsModal";
-import AuthorModal from "./components/Modals/AuthorModal";
-import ConfirmModal from "./components/Modals/ConfirmModal";
-import LibraryModal from "./components/Modals/LibraryModal";
-import PreviewModal from "./components/Modals/PreviewModal";
+const ProcessModal = React.lazy(() => import("./components/Modals/ProcessModal"));
+const ApprovalHistoryModal = React.lazy(() => import("./components/Modals/ApprovalHistoryModal"));
+const RenameProcessNodeModal = React.lazy(() => import("./components/Modals/RenameProcessNodeModal"));
+const AddStageModal = React.lazy(() => import("./components/Modals/AddStageModal"));
+const ProjectModal = React.lazy(() => import("./components/Modals/ProjectModal"));
+const SettingsModal = React.lazy(() => import("./components/Modals/SettingsModal"));
+const AuthorModal = React.lazy(() => import("./components/Modals/AuthorModal"));
+const ConfirmModal = React.lazy(() => import("./components/Modals/ConfirmModal"));
+const LibraryModal = React.lazy(() => import("./components/Modals/LibraryModal"));
+const PreviewModal = React.lazy(() => import("./components/Modals/PreviewModal"));
 
 export default function MainApp({ isEmbedded }) {
   var [authUser, setAuthUser] = useState(null);
@@ -5706,74 +5706,77 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                   </div>
                 </div>
               </div>
-              {/* MODAL 1: THÊM GIAI ĐOẠN/NHÓM BÊN TRONG MASTER */}
-<AddStageModal
-                isAddStageModalOpen={isAddStageModalOpen}
-                setIsAddStageModalOpen={setIsAddStageModalOpen}
-                newStageInput={newStageInput}
-                setNewStageInput={setNewStageInput}
-                handleAddProcessStage={handleAddProcessStage}
-                FIXED_STAGES_SUGGESTIONS={FIXED_STAGES_SUGGESTIONS}
-                projectStages={projectStages}
-                currentProjectId={currentProjectId}
-              />
+              <React.Suspense fallback={null}>
+                {/* MODAL 1: THÊM GIAI ĐOẠN/NHÓM BÊN TRONG MASTER */}
+                <AddStageModal
+                  isAddStageModalOpen={isAddStageModalOpen}
+                  setIsAddStageModalOpen={setIsAddStageModalOpen}
+                  newStageInput={newStageInput}
+                  setNewStageInput={setNewStageInput}
+                  handleAddProcessStage={handleAddProcessStage}
+                  FIXED_STAGES_SUGGESTIONS={FIXED_STAGES_SUGGESTIONS}
+                  projectStages={projectStages}
+                  currentProjectId={currentProjectId}
+                />
 
-<RenameProcessNodeModal
-                editingProcessNode={editingProcessNode}
-                setEditingProcessNode={setEditingProcessNode}
-                handleSaveEditProcessNode={handleSaveEditProcessNode}
-              />
+                <RenameProcessNodeModal
+                  editingProcessNode={editingProcessNode}
+                  setEditingProcessNode={setEditingProcessNode}
+                  handleSaveEditProcessNode={handleSaveEditProcessNode}
+                />
 
-              {/* MODAL 3: LỊCH SỬ KÝ DUYỆT */}
-<ApprovalHistoryModal
-                isApprovalHistoryModalOpen={isApprovalHistoryModalOpen}
-                setIsApprovalHistoryModalOpen={setIsApprovalHistoryModalOpen}
-                approvalHistory={approvalHistory}
-                setApprovalHistory={setApprovalHistory}
-                setConfirmModal={setConfirmModal}
-              />
+                {/* MODAL 3: LỊCH SỬ KÝ DUYỆT */}
+                <ApprovalHistoryModal
+                  isApprovalHistoryModalOpen={isApprovalHistoryModalOpen}
+                  setIsApprovalHistoryModalOpen={setIsApprovalHistoryModalOpen}
+                  approvalHistory={approvalHistory}
+                  setApprovalHistory={setApprovalHistory}
+                  setConfirmModal={setConfirmModal}
+                />
 
-              {/* SYSTEM MODALS GIAO DIỆN PHỤ */}
+                {/* SYSTEM MODALS GIAO DIỆN PHỤ */}
 
-              <ProcessModal
-                isProcessModalOpen={isProcessModalOpen}
-                setIsProcessModalOpen={setIsProcessModalOpen}
-                projectStages={projectStages}
-                currentProjectId={currentProjectId}
-                processModalStageFilter={processModalStageFilter}
-                setProcessModalStageFilter={setProcessModalStageFilter}
-                isCompactView={isCompactView}
-                setIsCompactView={setIsCompactView}
-                activeProjectTemplates={activeProjectTemplates}
-                selectedTemplateIds={selectedTemplateIds}
-                setSelectedTemplateIds={setSelectedTemplateIds}
-                setNewStageInput={setNewStageInput}
-                setIsAddStageModalOpen={setIsAddStageModalOpen}
-                setEditingProcessNode={setEditingProcessNode}
-                handleDeleteProcessNode={handleDeleteProcessNode}
-                setConfirmModal={setConfirmModal}
-                uploadedWorkbooks={uploadedWorkbooks}
-                setProjectStages={setProjectStages}
-                setEditingTemplate={setEditingTemplate}
-                handleDeleteTemplate={handleDeleteTemplate}
-                handleAddProcessDoc={handleAddProcessDoc}
-                loadedTemplates={loadedTemplates}
-                setActivePreviewId={setActivePreviewId}
-                setActiveMappingTab={setActiveMappingTab}
-                activePreviewId={activePreviewId}
-                handleBindSheetChange={handleBindSheetChange}
-                selectedSheetKeys={selectedSheetKeys}
-                showToast={showToast}
-                projects={projects}
-                setLoadedTemplates={setLoadedTemplates}
-                setApprovalHistory={setApprovalHistory}
-                setActiveSingleMappingTab={setActiveSingleMappingTab}
-              />
+                <ProcessModal
+                  isProcessModalOpen={isProcessModalOpen}
+                  setIsProcessModalOpen={setIsProcessModalOpen}
+                  projectStages={projectStages}
+                  currentProjectId={currentProjectId}
+                  processModalStageFilter={processModalStageFilter}
+                  setProcessModalStageFilter={setProcessModalStageFilter}
+                  isCompactView={isCompactView}
+                  setIsCompactView={setIsCompactView}
+                  activeProjectTemplates={activeProjectTemplates}
+                  selectedTemplateIds={selectedTemplateIds}
+                  setSelectedTemplateIds={setSelectedTemplateIds}
+                  setNewStageInput={setNewStageInput}
+                  setIsAddStageModalOpen={setIsAddStageModalOpen}
+                  setEditingProcessNode={setEditingProcessNode}
+                  handleDeleteProcessNode={handleDeleteProcessNode}
+                  setConfirmModal={setConfirmModal}
+                  uploadedWorkbooks={uploadedWorkbooks}
+                  setProjectStages={setProjectStages}
+                  setEditingTemplate={setEditingTemplate}
+                  handleDeleteTemplate={handleDeleteTemplate}
+                  handleAddProcessDoc={handleAddProcessDoc}
+                  loadedTemplates={loadedTemplates}
+                  setActivePreviewId={setActivePreviewId}
+                  setActiveMappingTab={setActiveMappingTab}
+                  activePreviewId={activePreviewId}
+                  handleBindSheetChange={handleBindSheetChange}
+                  selectedSheetKeys={selectedSheetKeys}
+                  showToast={showToast}
+                  projects={projects}
+                  setLoadedTemplates={setLoadedTemplates}
+                  setApprovalHistory={setApprovalHistory}
+                  setActiveSingleMappingTab={setActiveSingleMappingTab}
+                />
+              </React.Suspense>
             </div>
           </div>
         </div>
       </div>
       {/* END MAIN CONTENT AREA */}
+      <React.Suspense fallback={null}>
       <ProjectModal
         isProjectModalOpen={isProjectModalOpen}
         setIsProjectModalOpen={setIsProjectModalOpen}
@@ -6295,6 +6298,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         setActiveMappingTab={setActiveMappingTab}
         setActiveSingleMappingTab={setActiveSingleMappingTab}
       />
+      </React.Suspense>
 
       <HelpGuide
         open={showHelp}
