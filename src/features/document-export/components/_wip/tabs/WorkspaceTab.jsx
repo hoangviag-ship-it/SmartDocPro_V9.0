@@ -59,6 +59,8 @@ const WorkspaceTab = (props) => {
     focusedTag,
     setFocusedTag,
     excelColumnsGrouped,
+    batchTagFilterMode,
+    setBatchTagFilterMode,
     setZoomLevel,
     zoomLevel,
     isRenderingPreview,
@@ -512,6 +514,8 @@ const WorkspaceTab = (props) => {
                       {/* COMPACT UPLOAD REMOVED */}
 
                       <MappingTable
+  batchTagFilterMode={batchTagFilterMode}
+  setBatchTagFilterMode={setBatchTagFilterMode}
   viewStageFilter={viewStageFilter}
   setViewStageFilter={setViewStageFilter}
   projectStages={projectStages}
