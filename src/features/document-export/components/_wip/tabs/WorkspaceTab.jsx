@@ -169,7 +169,7 @@ const WorkspaceTab = (props) => {
                       className="w-10 flex flex-col items-center justify-center gap-2 h-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl text-slate-600 hover:text-indigo-400 hover:border-indigo-700 transition-all group"
                       title="Mở CÂY WBS"
                     >
-                      <span className="text-[9px] font-bold tracking-widest uppercase text-slate-500 group-hover:text-indigo-400 transition-colors" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>CÂY WBS</span>
+                      <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 group-hover:text-indigo-400 transition-colors" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>CÂY WBS</span>
                       <span className="text-slate-600 group-hover:text-indigo-400 text-xs transition-colors">▶</span>
                     </button>
                   )}
@@ -331,7 +331,7 @@ const WorkspaceTab = (props) => {
                           return (
                             <div key={stageName} className="mb-2">
                               <div className="flex items-center gap-2 mb-2">
-                                <span className="text-[12px] font-medium tracking-wide font-medium tracking-wide font-black text-slate-400 uppercase tracking-widest truncate">
+                                <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase truncate">
                                   📁 {stageName}
                                 </span>
                                 <div className="h-px bg-white/[0.03] backdrop-blur-md flex-1 mt-0.5"></div>
@@ -369,9 +369,7 @@ const WorkspaceTab = (props) => {
                                               : "bg-[#0A0D14]/40 backdrop-blur-xl border-slate-700 text-transparent hover:border-slate-500")
                                           }
                                         >
-                                          <span className="text-[8px] font-black">
-                                            ✓
-                                          </span>
+                                          <span className="text-[10px] font-bold">✓</span>
                                         </button>
                                         <div
                                           className="flex-1 min-w-0"
@@ -383,7 +381,7 @@ const WorkspaceTab = (props) => {
                                         >
                                           <div
                                             className={
-                                              "font-bold truncate cursor-pointer text-[12px] font-medium tracking-wide leading-tight " +
+                                              "font-semibold truncate cursor-pointer text-[12px] leading-tight " +
                                               (isChecked
                                                 ? "text-white"
                                                 : "text-slate-400")
@@ -405,7 +403,7 @@ const WorkspaceTab = (props) => {
                                                 stage: t.stage || "",
                                               });
                                             }}
-                                            className="p-1 text-[12px] font-medium tracking-wide font-medium tracking-wide hover:bg-indigo-600 text-slate-400 hover:text-white rounded transition-all"
+                                            className="p-1 text-[12px] hover:bg-indigo-600 text-slate-400 hover:text-white rounded transition-all"
                                             title="Sửa Tệp & Quản lý Thẻ"
                                           >
                                             ✏️
@@ -415,7 +413,7 @@ const WorkspaceTab = (props) => {
                                               e.stopPropagation();
                                               handleDuplicateTemplate(t.id);
                                             }}
-                                            className="p-1 text-[12px] font-medium tracking-wide font-medium tracking-wide hover:bg-emerald-600 text-slate-400 hover:text-white rounded transition-all"
+                                            className="p-1 text-[12px] hover:bg-emerald-600 text-slate-400 hover:text-white rounded transition-all"
                                             title="Nhân bản file"
                                           >
                                             📄
@@ -427,7 +425,7 @@ const WorkspaceTab = (props) => {
                                                 handleDeleteTemplate(t.id);
                                               }
                                             }}
-                                            className="p-1 text-[12px] font-medium tracking-wide font-medium tracking-wide hover:bg-red-600 text-slate-400 hover:text-white rounded transition-all"
+                                            className="p-1 text-[12px] hover:bg-red-600 text-slate-400 hover:text-white rounded transition-all"
                                             title="Xóa file"
                                           >
                                             🗑️
@@ -520,14 +518,14 @@ const WorkspaceTab = (props) => {
                             className="w-10 flex flex-col items-center justify-center gap-2 h-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl text-slate-600 hover:text-indigo-400 hover:border-indigo-700 transition-all group"
                             title="Mở Preview"
                           >
-                            <span className="text-[9px] font-bold tracking-widest uppercase text-slate-500 group-hover:text-indigo-400 transition-colors" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>PREVIEW</span>
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 group-hover:text-indigo-400 transition-colors" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>PREVIEW</span>
                             <span className="text-slate-600 group-hover:text-indigo-400 text-xs transition-colors">▶</span>
                           </button>
                         )}
                         {/* Expanded content */}
                         {isPreviewOpen && (
                           <div className="flex flex-col bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl overflow-hidden relative h-full w-full">
-                            <div className="flex justify-between items-center px-4 py-3 bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 print-hide shrink-0 z-10">
+                            <div className="flex justify-between items-center px-3 py-2 bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 print-hide shrink-0 z-10">
                               <span className="text-[12px] font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-1.5">
                                 <span>👀</span> PREVIEW LIVE
                               </span>
