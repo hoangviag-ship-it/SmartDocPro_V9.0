@@ -21,7 +21,7 @@ function App() {
         Tạm thời bọc toàn bộ logic cũ (11.000 dòng) vào đây.
         Bên trong AppLegacy, mình sẽ dùng CSS ẩn đi Sidebar cũ để nó hiển thị mượt mà bên trong MainLayout mới.
       */}
-      <div className={`${isFullScreen ? "h-[100vh] w-full" : "h-full w-full rounded-2xl overflow-hidden border border-slate-800/50 shadow-2xl"} relative`}>
+      <div className="h-full w-full relative overflow-hidden">
         <AppLegacy isEmbedded={true} />
       </div>
     </MainLayout>

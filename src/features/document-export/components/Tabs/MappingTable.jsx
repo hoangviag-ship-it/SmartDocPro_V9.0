@@ -79,7 +79,7 @@ const MappingTable = ({
                                         📁 Chưa PL
                                       </option>
                                     </select>
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 pointer-events-none">
+                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide text-slate-500 pointer-events-none">
                                       ▼
                                     </span>
                                   </div>
@@ -110,7 +110,7 @@ const MappingTable = ({
                                         },
                                       )}
                                     </select>
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 pointer-events-none">
+                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide text-slate-500 pointer-events-none">
                                       ▼
                                     </span>
                                   </div>
@@ -199,7 +199,7 @@ const MappingTable = ({
     
                                     {/* Search input inline */}
                                     <div className="flex items-center gap-2 bg-[#0A0D14]/40 backdrop-blur-xl border border-transparent hover:bg-white/[0.02] rounded-lg transition-colors duration-200 px-3 h-[32px] w-48 relative transition-all focus-within:border-indigo-500 focus-within:w-64 shadow-sm">
-                                      <span className="text-slate-500 text-[12px] font-medium tracking-wide font-medium tracking-wide">
+                                      <span className="text-slate-500 text-[12px] font-medium tracking-wide">
                                         🔍
                                       </span>
                                       <input
@@ -216,70 +216,47 @@ const MappingTable = ({
                                           onClick={function () {
                                             setMappingSearchQuery("");
                                           }}
-                                          className="text-slate-500 hover:text-white text-[12px] font-medium tracking-wide font-medium tracking-wide"
+                                          className="text-slate-500 hover:text-white text-[12px] font-medium tracking-wide"
                                         >
                                           ✕
                                         </button>
                                       )}
                                     </div>
+
+                                    {/* Stats inline */}
+                                    {tags.length > 0 && (() => {
+                                      let fCount = 0, eCount = 0, mCount = 0;
+                                      tags.forEach((tag) => {
+                                        var m = columnMapping[tag] || { type: 'excel', value: '' };
+                                        var isMapped = (m.type === 'excel' && m.value !== '') || (m.type === 'manual' && m.value !== '');
+                                        var isError = m.type === 'excel' && m.value && excelColumns.indexOf(m.value) === -1;
+                                        if (isError) eCount++;
+                                        else if (isMapped) fCount++;
+                                        else mCount++;
+                                      });
+                                      return (
+                                        <div className="flex items-center gap-2.5 ml-2 pl-2 border-l border-slate-700/60 shrink-0">
+                                          <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                                            <span className="text-white">{fCount}</span>/{tags.length}
+                                          </span>
+                                          <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                                            <span className="text-white">{mCount}</span>
+                                          </span>
+                                          <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                                            <span className={eCount > 0 ? 'text-red-400 font-bold' : 'text-white'}>{eCount}</span>
+                                          </span>
+                                        </div>
+                                      );
+                                    })()}
                                   </div>
-                                </div>
-    
-                                <div className="flex items-center gap-4 mb-3 px-2">
-                                  {(() => {
-                                    let fCount = 0,
-                                      eCount = 0,
-                                      mCount = 0,
-                                      tCount = tags.length;
-                                    tags.forEach((tag) => {
-                                      var mapping = columnMapping[tag] || {
-                                        type: "excel",
-                                        value: "",
-                                      };
-                                      var isMapped =
-                                        (mapping.type === "excel" &&
-                                          mapping.value !== "") ||
-                                        (mapping.type === "manual" &&
-                                          mapping.value !== "");
-                                      var isError =
-                                        mapping.type === "excel" &&
-                                        mapping.value &&
-                                        excelColumns.indexOf(mapping.value) === -1;
-                                      if (isError) eCount++;
-                                      else if (isMapped) fCount++;
-                                      else mCount++;
-                                    });
-                                    return (
-                                      <React.Fragment>
-                                        <div className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-bold text-slate-400">
-                                          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>{" "}
-                                          Đã map:{" "}
-                                          <span className="text-white ml-0.5">
-                                            {fCount}/{tCount}
-                                          </span>
-                                        </div>
-                                        <div className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-bold text-slate-400">
-                                          <span className="w-2 h-2 rounded-full bg-amber-500"></span>{" "}
-                                          Còn trống:{" "}
-                                          <span className="text-white ml-0.5">
-                                            {mCount}
-                                          </span>
-                                        </div>
-                                        <div className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-bold text-slate-400">
-                                          <span className="w-2 h-2 rounded-full bg-red-500"></span>{" "}
-                                          Lỗi cột:{" "}
-                                          <span className="text-white ml-0.5">
-                                            {eCount}
-                                          </span>
-                                        </div>
-                                      </React.Fragment>
-                                    );
-                                  })()}
                                 </div>
     
                                 {/* The Table View */}
                                 <div className="flex flex-col border border-slate-700/50 shadow-lg rounded-xl overflow-hidden bg-[#0A0D14]/40 backdrop-blur-xl shadow-xl max-h-[600px] font-sans">
-                                  <div className="flex items-center px-4 py-3 border-b border-slate-700/50 shadow-lg bg-[#0A0D14]/40 backdrop-blur-xl/80 text-[12px] font-medium tracking-wide font-medium tracking-wide font-black text-slate-500 uppercase tracking-widest sticky top-0 z-10 w-full min-w-[760px]">
+                                  <div className="flex items-center px-4 py-2 border-b border-slate-700/50 bg-[#0A0D14]/60 text-[11px] font-bold tracking-widest text-slate-500 uppercase sticky top-0 z-10 w-full min-w-[760px]">
                                     <div className="w-[15%] shrink-0 pr-2">
                                       Tên biến
                                     </div>
@@ -336,7 +313,7 @@ const MappingTable = ({
                                                       : "NHÓM: " + groupKey}
                                                   </span>
                                                   <div className="h-px bg-white/[0.03] backdrop-blur-md/90 flex-1" />
-                                                  <span className="text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 font-medium bg-[#0A0D14]/40 backdrop-blur-xl px-2 py-0.5 rounded-full border border-slate-700/50 shadow-lg">
+                                                  <span className="text-[12px] font-medium tracking-wide text-slate-500 font-medium bg-[#0A0D14]/40 backdrop-blur-xl px-2 py-0.5 rounded-full border border-slate-700/50 shadow-lg">
                                                     {mergedGroups[groupKey].length}{" "}
                                                     thẻ
                                                   </span>
@@ -506,21 +483,21 @@ const MappingTable = ({
                                                           {/* 2. TRẠNG THÁI */}
                                                           <div className="w-[100px] flex items-center shrink-0">
                                                             {isError ? (
-                                                              <span className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold text-red-500 bg-red-950/30 px-2 py-0.5 rounded-full border border-red-900/50 truncate">
+                                                              <span className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-bold text-red-500 bg-red-950/30 px-2 py-0.5 rounded-full border border-red-900/50 truncate">
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>{" "}
                                                                 <span className="truncate">
                                                                   Lỗi cột
                                                                 </span>
                                                               </span>
                                                             ) : isMapped ? (
-                                                              <span className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold text-emerald-500 bg-emerald-950/30 px-2 py-0.5 rounded-full border border-emerald-900/50 truncate">
+                                                              <span className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-bold text-emerald-500 bg-emerald-950/30 px-2 py-0.5 rounded-full border border-emerald-900/50 truncate">
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>{" "}
                                                                 <span className="truncate">
                                                                   Đã map
                                                                 </span>
                                                               </span>
                                                             ) : (
-                                                              <span className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold text-amber-500 bg-amber-950/30 px-2 py-0.5 rounded-full border border-amber-900/50 truncate">
+                                                              <span className="flex items-center gap-1.5 text-[12px] font-medium tracking-wide font-bold text-amber-500 bg-amber-950/30 px-2 py-0.5 rounded-full border border-amber-900/50 truncate">
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>{" "}
                                                                 <span className="truncate">
                                                                   Còn trống
@@ -548,7 +525,7 @@ const MappingTable = ({
                                                                     }),
                                                                   )
                                                                 }
-                                                                className={`px-3 text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold transition-all ${mapping.type === "excel" ? "bg-white/[0.06] backdrop-blur-lg text-white" : "bg-[#0A0D14]/40 backdrop-blur-xl text-slate-400 hover:bg-white/[0.03] backdrop-blur-md"}`}
+                                                                className={`px-3 text-[12px] font-medium tracking-wide font-bold transition-all ${mapping.type === "excel" ? "bg-white/[0.06] backdrop-blur-lg text-white" : "bg-[#0A0D14]/40 backdrop-blur-xl text-slate-400 hover:bg-white/[0.03] backdrop-blur-md"}`}
                                                               >
                                                                 Cột Excel
                                                               </button>
@@ -568,7 +545,7 @@ const MappingTable = ({
                                                                     }),
                                                                   )
                                                                 }
-                                                                className={`px-3 text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold transition-all ${excelData.length === 0 ? "bg-indigo-600/80 text-white" : (mapping.type === "manual" ? "bg-white/[0.06] backdrop-blur-lg text-white" : "bg-[#0A0D14]/40 backdrop-blur-xl text-slate-400 hover:bg-white/[0.03] backdrop-blur-md")}`}
+                                                                className={`px-3 text-[12px] font-medium tracking-wide font-bold transition-all ${excelData.length === 0 ? "bg-indigo-600/80 text-white" : (mapping.type === "manual" ? "bg-white/[0.06] backdrop-blur-lg text-white" : "bg-[#0A0D14]/40 backdrop-blur-xl text-slate-400 hover:bg-white/[0.03] backdrop-blur-md")}`}
                                                               >
                                                                 Nhập tay
                                                               </button>
@@ -687,7 +664,7 @@ const MappingTable = ({
                                                                         },
                                                                       )}
                                                                     </select>
-                                                                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 pointer-events-none">
+                                                                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide text-slate-500 pointer-events-none">
                                                                       ▼
                                                                     </span>
                                                                   </div>

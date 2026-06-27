@@ -248,7 +248,7 @@ export default function MainApp({ isEmbedded }) {
           </button>
 
           <div className="w-full bg-[#0A0D14]/40 backdrop-blur-xl/50 p-3 rounded-xl border border-slate-700/50 shadow-lg/50 mt-6">
-            <p className="text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-400 text-center font-medium">
+            <p className="text-[12px] font-medium tracking-wide text-slate-400 text-center font-medium">
               ⚠️ Hệ thống nhóm. Sử dụng Google để xác thực danh tính.
             </p>
           </div>
@@ -5010,7 +5010,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
               <span className="text-[13px] leading-relaxed text-indigo-200">👤</span>
             </div>
             <div className="hidden xl:flex flex-col min-w-0">
-              <span className="text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold text-white leading-tight truncate">
+              <span className="text-[12px] font-medium tracking-wide font-bold text-white leading-tight truncate">
                 Admin
               </span>
               <button
@@ -5029,12 +5029,12 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       </div>
 
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0A0D14]/40 backdrop-blur-xl">
-        {/* TOP NAVBAR STICKY - RE-STYLED FOR CONTENT AREA */}
-        <div className={`flex shrink-0 bg-[#0A0D14]/40 backdrop-blur-xl/80 backdrop-blur-md border-b border-slate-700/50 shadow-lg w-full py-2.5 px-4 flex-col md:flex-row items-center justify-between gap-4 shadow-sm z-30`}>
-          <div className="flex items-center gap-2 w-full md:w-auto">
-            <div className="flex items-center gap-2 bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700 hover:border-slate-600 rounded-lg px-2 py-1 transition-all flex-shrink-0 relative focus-within:border-indigo-500">
-              <span className="text-[12px] font-medium tracking-wide font-bold text-slate-500 uppercase hidden xl:block">
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* TOP NAVBAR STICKY */}
+        <div className="flex shrink-0 items-center justify-between gap-2 bg-[#0A0D14]/80 backdrop-blur-md border-b border-slate-800/80 w-full h-10 px-3 z-30">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 bg-slate-800/60 border border-slate-700/60 hover:border-slate-600 rounded-lg px-2 h-7 transition-all flex-shrink-0 relative focus-within:border-indigo-500">
+              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide hidden xl:block">
                 Dự án:
               </span>
               <select
@@ -5082,7 +5082,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                   );
                 })}
               </select>
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 pointer-events-none">
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] font-medium tracking-wide text-slate-500 pointer-events-none">
                 ▼
               </span>
             </div>
@@ -5216,7 +5216,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 hide-scrollbar shrink-0 max-w-full justify-start md:justify-end">
+          <div className="flex items-center gap-1.5 shrink-0">
           </div>
         </div>
 
@@ -5423,7 +5423,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                 <h4 className="text-[13px] leading-relaxed font-black text-amber-500 uppercase flex items-center gap-1.5 mb-3">
                   <span>⚠️</span> Cảnh báo: Biến trống
                 </h4>
-                <p className="text-[12px] font-medium tracking-wide font-medium tracking-wide text-amber-200 mb-3">
+                <p className="text-[12px] font-medium tracking-wide text-amber-200 mb-3">
                   Phát hiện {exportReportModal.missingRows.length} dòng dữ liệu
                   không điền đủ biến đã Map.
                 </p>
@@ -5431,7 +5431,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                   {exportReportModal.missingRows.slice(0, 50).map((r, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center text-[12px] font-medium tracking-wide font-medium tracking-wide bg-[#0A0D14]/40 backdrop-blur-xl border border-amber-900/30 px-3 py-2 rounded"
+                      className="flex justify-between items-center text-[12px] font-medium tracking-wide bg-[#0A0D14]/40 backdrop-blur-xl border border-amber-900/30 px-3 py-2 rounded"
                     >
                       <span className="text-slate-300 font-bold">
                         Dòng {r.row}
@@ -5442,7 +5442,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                     </div>
                   ))}
                   {exportReportModal.missingRows.length > 50 && (
-                    <div className="text-center text-[12px] font-medium tracking-wide font-medium tracking-wide text-amber-500 pt-2 italic">
+                    <div className="text-center text-[12px] font-medium tracking-wide text-amber-500 pt-2 italic">
                       ...và {exportReportModal.missingRows.length - 50} dòng
                       khác.
                     </div>
@@ -5495,7 +5495,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
             <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[12px] font-medium tracking-wide font-medium tracking-wide font-black text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-[12px] font-medium tracking-wide font-black text-slate-400 uppercase tracking-wider mb-1.5">
                     Tên Mẫu Gốc:
                   </label>
                   <input
@@ -5512,7 +5512,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium tracking-wide font-medium tracking-wide font-black text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-[12px] font-medium tracking-wide font-black text-slate-400 uppercase tracking-wider mb-1.5">
                     Tên Tệp Xuất Định Dạng:
                   </label>
                   <div className="flex items-center gap-1.5 bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-xl px-3 py-1.5 text-[13px] leading-relaxed">
@@ -5529,7 +5529,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                       className="flex-1 bg-transparent py-1 text-white font-bold outline-none focus:ring-0"
                       placeholder="Tên_HoanThanh"
                     />
-                    <span className="text-slate-500 font-mono text-[12px] font-medium tracking-wide font-medium tracking-wide select-none">
+                    <span className="text-slate-500 font-mono text-[12px] font-medium tracking-wide select-none">
                       (Đuôi: docx, xlsx)
                     </span>
                   </div>
@@ -5537,7 +5537,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
               </div>
 
               <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-xl p-3">
-                <label className="block text-[12px] font-medium tracking-wide font-medium tracking-wide font-black text-sky-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <label className="block text-[12px] font-medium tracking-wide font-black text-sky-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <span>💾</span> TẢI VỀ MÁY / SAO LƯU OFFLINE:
                 </label>
 
