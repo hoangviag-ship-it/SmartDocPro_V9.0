@@ -4929,7 +4929,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
 
   return (
     <div
-      className="flex h-screen bg-[#0A0D14]/40 backdrop-blur-xl text-slate-100 font-sans relative overflow-hidden"
+      className={`flex ${isEmbedded ? 'h-full' : 'h-screen'} bg-[#0A0D14]/40 backdrop-blur-xl text-slate-100 font-sans relative overflow-hidden`}
       style={{ zoom: `${appZoomScale}%` }}
     >
       <input type="file" id="global-word-upload" accept=".docx, .xlsx" multiple className="hidden" onChange={handleWordUpload} />

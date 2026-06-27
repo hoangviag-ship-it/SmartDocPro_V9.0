@@ -32,8 +32,8 @@ const MainLayout = ({ children }) => {
         )}
 
         {/* Main Content Area */}
-        <main className={`flex-1 overflow-y-auto ${isFullScreen ? 'p-0' : 'p-6'} relative z-10`}>
-          <div className={`${screenResolution === '2k' ? 'max-w-none' : 'max-w-7xl'} mx-auto h-full`}>
+        <main className="flex-1 min-h-0 overflow-hidden relative z-10">
+          <div className="h-full w-full">
             {children}
           </div>
         </main>

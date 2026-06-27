@@ -136,8 +136,8 @@ const WorkspaceTab = (props) => {
   } = props;
 
   return (
-    <div className={appRoute === "legal" ? "block" : "hidden"}>
-            <div className="w-full max-w-[100%] xl:max-w-[100%] 2xl:max-w-[1800px] mx-auto pt-4 px-2 sm:px-4 pb-20 animate-fade-in">
+    <div className={`h-full flex flex-col ${appRoute === "legal" ? "" : ""}`}>
+            <div className="w-full max-w-[100%] xl:max-w-[100%] 2xl:max-w-[1800px] mx-auto pt-3 px-2 sm:px-4 pb-2 animate-fade-in flex-1 flex flex-col min-h-0">
               {activeProjectTemplates.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left mb-4">
                   <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-lg px-3 py-2 flex justify-between items-center shadow-sm">
@@ -211,7 +211,7 @@ const WorkspaceTab = (props) => {
               )}
 
               {/* MAIN APP TABS OUTSIDE */}
-              <div className="flex bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-xl overflow-x-auto shrink-0 shadow-sm relative z-10 mb-4 xl:mb-6 custom-scrollbar flex-nowrap">
+              <div className="flex bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-xl overflow-x-auto shrink-0 shadow-sm relative z-10 mb-3 custom-scrollbar flex-nowrap">
                 <button
                   onClick={() => setActiveMainTab("workspace")}
                   className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
@@ -267,7 +267,7 @@ const WorkspaceTab = (props) => {
               </div>
 
               {/* MASHTER-DETAIL WBS SPLIT LAYOUT */}
-              <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 items-stretch w-full h-[calc(100vh-140px)] min-h-[600px] pb-4">
+              <div className="flex flex-col xl:flex-row gap-3 xl:gap-4 items-stretch w-full flex-1 min-h-0 pb-2">
                 {/* LEFT WBS DIRECTORY PANE */}
                 <div className="w-full xl:w-[320px] 2xl:w-[380px] bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl shrink-0 flex flex-col shadow-sm overflow-hidden">
                   <div className="bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 shadow-lg p-4 flex flex-col gap-3 shrink-0">
@@ -518,11 +518,11 @@ const WorkspaceTab = (props) => {
                 <div
                   className={`flex flex-col h-full min-w-0 transition-all duration-300 flex-1`}
                 >
-                  <div className="flex-1 overflow-y-auto custom-scrollbar">
+                  <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
                     <div
-                      className={`h-full animate-fade-in ${activeMainTab === "workspace" ? "flex gap-4 xl:gap-6" : "hidden"}`}
+                      className={`h-full animate-fade-in ${activeMainTab === "workspace" ? "flex gap-3 xl:gap-4" : "hidden"}`}
                     >
-                      <div className={`w-full ${activeMainTab === "workspace" ? "flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-4 xl:space-y-6" : ""}`}>
+                      <div className={`w-full ${activeMainTab === "workspace" ? "flex-1 h-full overflow-y-auto custom-scrollbar pr-2 space-y-3 xl:space-y-4" : ""}`}>
                       {/* COMPACT UPLOAD REMOVED */}
 
                       <MappingTable
