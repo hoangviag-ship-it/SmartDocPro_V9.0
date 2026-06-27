@@ -855,6 +855,21 @@ export async function replaceTagsInXml(
     return new RegExp(chars.join("(?:<[^>]+>|\\s)*"), "gi");
   };
 
+  // Xóa <w:r> rỗng còn sót sau khi xóa text của tag không dùng.
+  // Chỉ xóa run không còn nội dung thực (chỉ có rPr và/hoặc w:t rỗng).
+  // Giữ lại run có drawing, fldChar, tab, br hoặc nội dung khác.
+  var removeEmptyRuns = function(xml) {
+    return xml.replace(/<w:r\b[^>]*>[\s\S]*?<\/w:r>/g, function(run) {
+      var openTagEnd = run.indexOf('>');
+      var inner = run.slice(openTagEnd + 1, run.lastIndexOf('</w:r>'));
+      var stripped = inner
+        .replace(/<w:rPr\b[\s\S]*?<\/w:rPr>/g, '')
+        .replace(/<w:t\b[^>]*>\s*<\/w:t>/g, '')
+        .replace(/<w:t\b[^>]*\/>/g, '');
+      return stripped.trim() ? run : '';
+    });
+  };
+
   var paths = [];
   for (var path in zip.files) if (path.endsWith(".xml")) paths.push(path);
 
@@ -929,6 +944,7 @@ export async function replaceTagsInXml(
           });
         }
       } catch (e) { console.warn("Lỗi xử lý nội dung file trong zip:", e); }
+      content = removeEmptyRuns(content);
       zip.file(path, content);
       continue;
     }
@@ -1112,6 +1128,7 @@ export async function replaceTagsInXml(
       console.error("Lỗi trích xuất tag còn sót", e);
     }
 
+    content = removeEmptyRuns(content);
     zip.file(path, content);
   }
   return Array.from(missingFromXml);

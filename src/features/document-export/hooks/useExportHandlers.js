@@ -354,6 +354,17 @@ export const useExportHandlers = ({
         saveAs(out, singleFileName + fileExt);
         showToast("Đã xuất File Đơn Lẻ thành công!");
       } else {
+        const pName =
+          projects.find((p) => p.id === currentProjectId)?.name || "Tong_Hop";
+        let defaultZipName = `${pName}.zip`;
+        let finalZipName = window.prompt(
+          "Vui lòng nhập tên file ZIP tải về:",
+          defaultZipName,
+        );
+        if (finalZipName === null) return;
+        if (!finalZipName.trim()) finalZipName = defaultZipName;
+        if (!finalZipName.toLowerCase().endsWith(".zip"))
+          finalZipName += ".zip";
         var zipArchive = new JSZip();
         let allMissed = new Set();
         for (let i = 0; i < templatesToExport.length; i++) {
@@ -406,17 +417,6 @@ export const useExportHandlers = ({
           );
         }
         var content = await zipArchive.generateAsync({ type: "blob" });
-        const pName =
-          projects.find((p) => p.id === currentProjectId)?.name || "Tong_Hop";
-        let defaultZipName = `${pName}.zip`;
-        let finalZipName = window.prompt(
-          "Vui lòng nhập tên file ZIP tải về:",
-          defaultZipName,
-        );
-        if (!finalZipName) finalZipName = defaultZipName;
-        if (!finalZipName.toLowerCase().endsWith(".zip"))
-          finalZipName += ".zip";
-
         saveAs(content, finalZipName);
         showToast("Đã tải xuống bộ ZIP!");
       }
