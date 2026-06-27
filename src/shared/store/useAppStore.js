@@ -56,6 +56,16 @@ export const useAppStore = create((set) => ({
     set({ screenResolution: val });
   },
 
+  // Sidebar
+  isSidebarOpen: typeof localStorage !== 'undefined' ? (localStorage.getItem('sde_sidebar_open') !== 'false') : true,
+  toggleSidebar: () => set((state) => {
+    const next = !state.isSidebarOpen;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('sde_sidebar_open', String(next));
+    }
+    return { isSidebarOpen: next };
+  }),
+
   // Dark Mode
   isDarkMode: typeof localStorage !== 'undefined' ? (localStorage.getItem('sde_dark_mode') !== 'false') : true,
   toggleDarkMode: () => set((state) => {

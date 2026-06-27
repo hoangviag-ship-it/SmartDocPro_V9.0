@@ -17,7 +17,8 @@ import {
   ChevronUp,
   FileDown,
   Sun,
-  Moon
+  Moon,
+  PanelLeftClose
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -27,6 +28,7 @@ const Sidebar = () => {
   const triggerAppAction = useAppStore((state) => state.triggerAppAction);
   const isDarkMode = useAppStore((state) => state.isDarkMode);
   const toggleDarkMode = useAppStore((state) => state.toggleDarkMode);
+  const toggleSidebar = useAppStore((state) => state.toggleSidebar);
 
   // Export settings from store (global, shared with AppContent)
   const exportMode = useAppStore((state) => state.exportMode);
@@ -56,13 +58,20 @@ const Sidebar = () => {
 
       {/* Logo Area */}
       <div className="px-4 py-3 flex items-center gap-3 border-b border-slate-800/50">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20 shrink-0">
           <Database className="w-4 h-4 text-white" />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-1 min-w-0">
           <span className="text-white font-bold tracking-wide text-lg leading-tight">SmartDoc</span>
           <span className="text-xs text-indigo-400 font-medium tracking-widest">PRO v8.0</span>
         </div>
+        <button
+          onClick={toggleSidebar}
+          className="p-1.5 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-colors shrink-0"
+          title="Ẩn menu"
+        >
+          <PanelLeftClose className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Navigation (scrollable) */}
