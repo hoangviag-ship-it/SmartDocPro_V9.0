@@ -155,3 +155,22 @@ option {
   background-color: #0A0D14;
   color: #e2e8f0;
 }
+
+/* ── LIGHT THEME ── */
+html.light-theme {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Re-invert elements that should keep their original appearance */
+html.light-theme img,
+html.light-theme video,
+html.light-theme iframe,
+html.light-theme #docx-preview-inline-container,
+html.light-theme .print-modal-container {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.light-theme option {
+  background-color: #f8fafc;
+  color: #0f172a;
+}

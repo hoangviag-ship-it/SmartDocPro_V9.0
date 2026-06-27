@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainLayout from './shared/layout/MainLayout';
 import AppLegacy from './features/document-export/AppLegacy';
 import { useAppStore } from './shared/store/useAppStore';
 
 function App() {
   const isFullScreen = useAppStore((state) => state.isFullScreen);
+  const isDarkMode = useAppStore((state) => state.isDarkMode);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.remove('light-theme');
+    } else {
+      document.documentElement.classList.add('light-theme');
+    }
+  }, [isDarkMode]);
 
   return (
     <MainLayout>

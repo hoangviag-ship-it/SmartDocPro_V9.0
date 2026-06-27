@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { 
-  LayoutDashboard, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Settings,
   History,
   FileCode2,
   Database,
@@ -15,7 +15,9 @@ import {
   Printer,
   ChevronDown,
   ChevronUp,
-  FileDown
+  FileDown,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -23,6 +25,8 @@ const Sidebar = () => {
   const activeMainTab = useAppStore((state) => state.activeMainTab);
   const setActiveMainTab = useAppStore((state) => state.setActiveMainTab);
   const triggerAppAction = useAppStore((state) => state.triggerAppAction);
+  const isDarkMode = useAppStore((state) => state.isDarkMode);
+  const toggleDarkMode = useAppStore((state) => state.toggleDarkMode);
 
   // Export settings from store (global, shared with AppContent)
   const exportMode = useAppStore((state) => state.exportMode);
@@ -163,6 +167,13 @@ const Sidebar = () => {
             <span className="text-[10px] text-slate-500 truncate">Hoạt động offline</span>
           </div>
         </div>
+        <button
+          onClick={toggleDarkMode}
+          className="p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-slate-800 shrink-0"
+          title={isDarkMode ? 'Chuyển sang Light Mode' : 'Chuyển sang Dark Mode'}
+        >
+          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
         <button className="relative p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-slate-800 shrink-0">
           <Bell className="w-5 h-5" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-pink-500 rounded-full border-2 border-[#0A0D14]"></span>

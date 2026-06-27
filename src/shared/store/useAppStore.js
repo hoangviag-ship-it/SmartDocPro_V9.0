@@ -56,6 +56,16 @@ export const useAppStore = create((set) => ({
     set({ screenResolution: val });
   },
 
+  // Dark Mode
+  isDarkMode: typeof localStorage !== 'undefined' ? (localStorage.getItem('sde_dark_mode') !== 'false') : true,
+  toggleDarkMode: () => set((state) => {
+    const next = !state.isDarkMode;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('sde_dark_mode', String(next));
+    }
+    return { isDarkMode: next };
+  }),
+
   // Global Action Triggers
   appActionTrigger: null,
   triggerAppAction: (action) => set({ appActionTrigger: { action, timestamp: Date.now() } }),
