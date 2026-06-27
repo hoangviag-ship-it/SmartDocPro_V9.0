@@ -153,8 +153,8 @@ const WorkspaceTab = (props) => {
   };
 
   return (
-    <div className={`h-full flex flex-col ${appRoute === "legal" ? "" : ""}`}>
-            <div className="w-full max-w-[100%] xl:max-w-[100%] 2xl:max-w-[1800px] mx-auto pt-3 px-2 sm:px-4 pb-2 animate-fade-in flex-1 flex flex-col min-h-0">
+    <div className="h-full flex flex-col">
+            <div className="w-full pt-2 px-3 pb-2 animate-fade-in flex-1 flex flex-col min-h-0">
               {activeProjectTemplates.length > 0 && (
                 <div className="flex items-center gap-3 mb-2 h-7 overflow-x-auto shrink-0 custom-scrollbar">
                   <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">

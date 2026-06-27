@@ -5029,12 +5029,12 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       </div>
 
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0A0D14]/40 backdrop-blur-xl">
-        {/* TOP NAVBAR STICKY - RE-STYLED FOR CONTENT AREA */}
-        <div className={`flex shrink-0 bg-[#0A0D14]/40 backdrop-blur-xl/80 backdrop-blur-md border-b border-slate-700/50 shadow-lg w-full py-2.5 px-4 flex-col md:flex-row items-center justify-between gap-4 shadow-sm z-30`}>
-          <div className="flex items-center gap-2 w-full md:w-auto">
-            <div className="flex items-center gap-2 bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700 hover:border-slate-600 rounded-lg px-2 py-1 transition-all flex-shrink-0 relative focus-within:border-indigo-500">
-              <span className="text-[12px] font-medium tracking-wide font-bold text-slate-500 uppercase hidden xl:block">
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* TOP NAVBAR STICKY */}
+        <div className="flex shrink-0 items-center justify-between gap-2 bg-[#0A0D14]/80 backdrop-blur-md border-b border-slate-800/80 w-full h-10 px-3 z-30">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 bg-slate-800/60 border border-slate-700/60 hover:border-slate-600 rounded-lg px-2 h-7 transition-all flex-shrink-0 relative focus-within:border-indigo-500">
+              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide hidden xl:block">
                 Dự án:
               </span>
               <select
@@ -5216,7 +5216,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 hide-scrollbar shrink-0 max-w-full justify-start md:justify-end">
+          <div className="flex items-center gap-1.5 shrink-0">
           </div>
         </div>
 
