@@ -61,6 +61,7 @@ const AuthorModal = React.lazy(() => import("./components/Modals/AuthorModal"));
 const ConfirmModal = React.lazy(() => import("./components/Modals/ConfirmModal"));
 const LibraryModal = React.lazy(() => import("./components/Modals/LibraryModal"));
 const PreviewModal = React.lazy(() => import("./components/Modals/PreviewModal"));
+const WorkspaceTab = React.lazy(() => import("./components/_wip/tabs/WorkspaceTab"));
 
 export default function MainApp({ isEmbedded }) {
   var [authUser, setAuthUser] = useState(null);
@@ -5225,7 +5226,9 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
 
         {/* WORKSPACE CONTENT AREA (Scrollable) */}
         <div className="flex-1 overflow-y-auto custom-scrollbar relative">
-          <div className={appRoute === "legal" ? "block" : "hidden"}>
+          {
+            // eslint-disable-next-line no-constant-binary-expression
+            false && (<div className={appRoute === "legal" ? "block" : "hidden"}>
             <div className="w-full max-w-[100%] xl:max-w-[100%] 2xl:max-w-[1800px] mx-auto pt-4 px-2 sm:px-4 pb-20 animate-fade-in">
               {activeProjectTemplates.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left mb-4">
@@ -5772,7 +5775,130 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
                 />
               </React.Suspense>
             </div>
-          </div>
+          </div>)}
+          <React.Suspense fallback={null}>
+            <WorkspaceTab
+              appRoute={appRoute}
+              activeProjectTemplates={activeProjectTemplates}
+              selectedTemplateIds={selectedTemplateIds}
+              tags={tags}
+              formData={formData}
+              columnMapping={columnMapping}
+              excelData={excelData}
+              setSelectedTemplateIds={setSelectedTemplateIds}
+              wbsStageFilter={wbsStageFilter}
+              setIsProcessModalOpen={setIsProcessModalOpen}
+              setWbsStageFilter={setWbsStageFilter}
+              setActiveMainTab={setActiveMainTab}
+              setActivePreviewId={setActivePreviewId}
+              setActiveMappingTab={setActiveMappingTab}
+              setActiveSingleMappingTab={setActiveSingleMappingTab}
+              setEditingTemplate={setEditingTemplate}
+              handleDuplicateTemplate={handleDuplicateTemplate}
+              handleDeleteTemplate={handleDeleteTemplate}
+              activeMainTab={activeMainTab}
+              viewStageFilter={viewStageFilter}
+              setViewStageFilter={setViewStageFilter}
+              projectStages={projectStages}
+              currentProjectId={currentProjectId}
+              activeMappingTab={activeMappingTab}
+              visibleProjectTemplates={visibleProjectTemplates}
+              setConfirmModal={setConfirmModal}
+              setColumnMapping={setColumnMapping}
+              showToast={showToast}
+              handleAutoMap={handleAutoMap}
+              selectedProfileName={selectedProfileName}
+              handleProfileSelect={handleProfileSelect}
+              savedProfiles={savedProfiles}
+              handleSaveProfile={handleSaveProfile}
+              mappingSearchQuery={mappingSearchQuery}
+              setMappingSearchQuery={setMappingSearchQuery}
+              excelColumns={excelColumns}
+              activeExcelRowIndex={activeExcelRowIndex}
+              selectedExcelRows={selectedExcelRows}
+              getBoundRow={getBoundRow}
+              safeGetExcelValue={safeGetExcelValue}
+              tagsToDisplayInMapping={tagsToDisplayInMapping}
+              globalDictionary={globalDictionary}
+              handleCopyTag={handleCopyTag}
+              copiedTag={copiedTag}
+              focusedTag={focusedTag}
+              setFocusedTag={setFocusedTag}
+              excelColumnsGrouped={excelColumnsGrouped}
+              batchTagFilterMode={batchTagFilterMode}
+              setBatchTagFilterMode={setBatchTagFilterMode}
+              setZoomLevel={setZoomLevel}
+              zoomLevel={zoomLevel}
+              isRenderingPreview={isRenderingPreview}
+              uploadedWorkbooks={uploadedWorkbooks}
+              handleRemoveWorkbook={handleRemoveWorkbook}
+              selectedSheetKeys={selectedSheetKeys}
+              setSelectedSheetKeys={setSelectedSheetKeys}
+              filteredExcelData={filteredExcelData}
+              excelSearchQuery={excelSearchQuery}
+              setExcelSearchQuery={setExcelSearchQuery}
+              hideEmptyColumns={hideEmptyColumns}
+              setHideEmptyColumns={setHideEmptyColumns}
+              excelRowsPerPage={excelRowsPerPage}
+              setExcelRowsPerPage={setExcelRowsPerPage}
+              excelPage={excelPage}
+              setExcelPage={setExcelPage}
+              setSelectedExcelRows={setSelectedExcelRows}
+              displayExcelColumns={displayExcelColumns}
+              excelColFilters={excelColFilters}
+              setExcelColFilters={setExcelColFilters}
+              paginatedExcelData={paginatedExcelData}
+              setActiveExcelRowIndex={setActiveExcelRowIndex}
+              editingExcelCell={editingExcelCell}
+              setEditingExcelCell={setEditingExcelCell}
+              handleExcelCellEdit={handleExcelCellEdit}
+              totalExcelPages={totalExcelPages}
+              exportMode={exportMode}
+              setExportMode={setExportMode}
+              exportSubFolderPattern={exportSubFolderPattern}
+              setExportSubFolderPattern={setExportSubFolderPattern}
+              cleanUnusedTags={cleanUnusedTags}
+              setCleanUnusedTags={setCleanUnusedTags}
+              enableHighlight={enableHighlight}
+              setEnableHighlight={setEnableHighlight}
+              exportProjectName={exportProjectName}
+              handleAutofillFromExcelRow={handleAutofillFromExcelRow}
+              validateAndGenerateDoc={validateAndGenerateDoc}
+              validateAndGenerateBatch={validateAndGenerateBatch}
+              isProcessing={isProcessing}
+              setGlobalDictionary={setGlobalDictionary}
+              standardPrefixes={standardPrefixes}
+              setStandardPrefixes={setStandardPrefixes}
+              exportDictionaryTemplate={exportDictionaryTemplate}
+              setLoadedTemplates={setLoadedTemplates}
+              setFormData={setFormData}
+              isAddStageModalOpen={isAddStageModalOpen}
+              setIsAddStageModalOpen={setIsAddStageModalOpen}
+              newStageInput={newStageInput}
+              setNewStageInput={setNewStageInput}
+              handleAddProcessStage={handleAddProcessStage}
+              FIXED_STAGES_SUGGESTIONS={FIXED_STAGES_SUGGESTIONS}
+              editingProcessNode={editingProcessNode}
+              setEditingProcessNode={setEditingProcessNode}
+              handleSaveEditProcessNode={handleSaveEditProcessNode}
+              isApprovalHistoryModalOpen={isApprovalHistoryModalOpen}
+              setIsApprovalHistoryModalOpen={setIsApprovalHistoryModalOpen}
+              approvalHistory={approvalHistory}
+              setApprovalHistory={setApprovalHistory}
+              isProcessModalOpen={isProcessModalOpen}
+              processModalStageFilter={processModalStageFilter}
+              setProcessModalStageFilter={setProcessModalStageFilter}
+              isCompactView={isCompactView}
+              setIsCompactView={setIsCompactView}
+              handleDeleteProcessNode={handleDeleteProcessNode}
+              setProjectStages={setProjectStages}
+              handleAddProcessDoc={handleAddProcessDoc}
+              loadedTemplates={loadedTemplates}
+              activePreviewId={activePreviewId}
+              handleBindSheetChange={handleBindSheetChange}
+              projects={projects}
+            />
+          </React.Suspense>
         </div>
       </div>
       {/* END MAIN CONTENT AREA */}
