@@ -155,90 +155,6 @@ const WorkspaceTab = (props) => {
   return (
     <div className="h-full flex flex-col">
             <div className="w-full pt-2 px-3 pb-2 animate-fade-in flex-1 flex flex-col min-h-0">
-              {activeProjectTemplates.length > 0 && (
-                <div className="flex items-center gap-3 mb-2 h-7 overflow-x-auto shrink-0 custom-scrollbar">
-                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
-                    <span className="text-white font-bold">{activeProjectTemplates.length}</span> mẫu
-                    {selectedTemplateIds.length > 0 && (
-                      <span className="text-[10px] text-indigo-400 bg-indigo-950/60 px-1.5 py-0.5 rounded border border-indigo-900/50">{selectedTemplateIds.length} chọn</span>
-                    )}
-                  </span>
-                  <span className="w-px h-4 bg-slate-700/80 shrink-0" />
-                  <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
-                    <span className="text-indigo-400 font-bold">{tags.length}</span> biến
-                  </span>
-                  <span className="w-px h-4 bg-slate-700/80 shrink-0" />
-                  <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
-                    <span className="text-emerald-400 font-bold">{tags.filter(function(t){ return formData[t] && String(formData[t]).trim() !== ''; }).length}</span>
-                    <span>/{tags.length} form</span>
-                  </span>
-                  <span className="w-px h-4 bg-slate-700/80 shrink-0" />
-                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
-                    <span className="text-purple-400 font-bold">{tags.filter(function(t){ var m = columnMapping[t]; return m && ((m.type === 'excel' && m.value) || (m.type === 'manual' && m.value)); }).length}</span>
-                    <span>/{tags.length} map</span>
-                    {excelData.length > 0 && (
-                      <span className="text-[10px] text-purple-400 bg-purple-950/60 px-1.5 py-0.5 rounded border border-purple-900/50">{excelData.length} dòng XL</span>
-                    )}
-                  </span>
-                </div>
-              )}
-
-              {/* MAIN APP TABS OUTSIDE */}
-              <div className="flex bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-xl overflow-x-auto shrink-0 shadow-sm relative z-10 mb-3 custom-scrollbar flex-nowrap">
-                <button
-                  onClick={() => setActiveMainTab("workspace")}
-                  className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
-                    activeMainTab === "workspace"
-                      ? "bg-[#0A0D14]/40 backdrop-blur-xl border-indigo-500 text-indigo-400"
-                      : "border-transparent text-slate-500 hover:text-slate-400 hover:bg-[#0A0D14]/40 backdrop-blur-xl/50"
-                  }`}
-                >
-                  <span>📋</span> KHUNG TRỘN & ĐIỀN BIẾN
-                </button>
-                <button
-                  onClick={() => setActiveMainTab("excel")}
-                  className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
-                    activeMainTab === "excel"
-                      ? "bg-[#0A0D14]/40 backdrop-blur-xl border-emerald-500 text-emerald-400"
-                      : "border-transparent text-slate-500 hover:text-slate-400 hover:bg-[#0A0D14]/40 backdrop-blur-xl/50"
-                  }`}
-                >
-                  <span>📊</span> DỮ LIỆU EXCEL ({excelData ? excelData.length : 0})
-                </button>
-
-                <button
-                  onClick={() => setActiveMainTab("variables")}
-                  className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
-                    activeMainTab === "variables"
-                      ? "bg-[#0A0D14]/40 backdrop-blur-xl border-amber-500 text-amber-400"
-                      : "border-transparent text-slate-500 hover:text-slate-400 hover:bg-[#0A0D14]/40 backdrop-blur-xl/50"
-                  }`}
-                >
-                  <span>📚</span> QUẢN LÝ BIẾN
-                </button>
-
-                <button
-                  onClick={() => setActiveMainTab("export")}
-                  className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
-                    activeMainTab === "export"
-                      ? "bg-[#0A0D14]/40 backdrop-blur-xl border-rose-500 text-rose-400"
-                      : "border-transparent text-slate-500 hover:text-slate-400 hover:bg-[#0A0D14]/40 backdrop-blur-xl/50"
-                  }`}
-                >
-                  <span>🚀</span> XUẤT FILE HÀNG LOẠT
-                </button>
-                <button
-                  onClick={() => setActiveMainTab("history")}
-                  className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
-                    activeMainTab === "history"
-                      ? "bg-[#0A0D14]/40 backdrop-blur-xl border-indigo-500 text-indigo-400"
-                      : "border-transparent text-slate-500 hover:text-slate-400 hover:bg-[#0A0D14]/40 backdrop-blur-xl/50"
-                  }`}
-                >
-                  <span>🕓</span> LỊCH SỬ XUẤT
-                </button>
-              </div>
-
               {/* MASHTER-DETAIL WBS SPLIT LAYOUT */}
               <div className="flex flex-col xl:flex-row gap-3 xl:gap-4 items-stretch w-full flex-1 min-h-0 pb-2">
                 {/* LEFT WBS DIRECTORY PANE — collapsible */}
@@ -260,15 +176,15 @@ const WorkspaceTab = (props) => {
                   {/* Expanded content */}
                   {isWbsOpen && (
                   <div className="w-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl flex flex-col overflow-hidden">
-                  <div className="bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 shadow-lg p-4 flex flex-col gap-3 shrink-0">
+                  <div className="bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 p-3 flex flex-col gap-2 shrink-0">
                     <div className="flex justify-between items-center">
-                      <h2 className="text-[13px] leading-relaxed font-black text-white flex items-center gap-2 tracking-wide uppercase">
-                        <span>🗂️</span> CÂY THƯ MỤC WBS
+                      <h2 className="text-[12px] font-bold text-slate-300 flex items-center gap-1.5 tracking-wide uppercase">
+                        <span>🗂️</span> CÂY WBS
                       </h2>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1.5">
                         <button
                           onClick={toggleWbs}
-                          className="px-2 py-1 border border-slate-700 rounded text-[11px] text-slate-500 hover:text-slate-300 hover:border-slate-600 transition-all"
+                          className="px-2 py-0.5 border border-slate-700 rounded text-[11px] text-slate-500 hover:text-slate-300 hover:border-slate-600 transition-all"
                           title="Thu gọn WBS"
                         >◀</button>
                         <button
@@ -314,11 +230,31 @@ const WorkspaceTab = (props) => {
                       </div>
                     </div>
                     {activeProjectTemplates.length > 0 && (
+                      <div className="flex items-center gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                        <span className="flex items-center gap-1 text-[10px] font-semibold text-slate-400 whitespace-nowrap shrink-0">
+                          <span className="text-white font-bold">{activeProjectTemplates.length}</span> mẫu
+                          {selectedTemplateIds.length > 0 && <span className="text-indigo-400 bg-indigo-950/60 px-1 rounded border border-indigo-900/50">{selectedTemplateIds.length} chọn</span>}
+                        </span>
+                        <span className="w-px h-3 bg-slate-700 shrink-0" />
+                        <span className="text-[10px] font-semibold text-slate-400 whitespace-nowrap shrink-0">
+                          <span className="text-indigo-400 font-bold">{tags.length}</span> biến
+                        </span>
+                        <span className="w-px h-3 bg-slate-700 shrink-0" />
+                        <span className="text-[10px] font-semibold text-slate-400 whitespace-nowrap shrink-0">
+                          <span className="text-emerald-400 font-bold">{tags.filter(function(t){ return formData[t] && String(formData[t]).trim() !== ''; }).length}</span>/{tags.length} form
+                        </span>
+                        <span className="w-px h-3 bg-slate-700 shrink-0" />
+                        <span className="text-[10px] font-semibold text-slate-400 whitespace-nowrap shrink-0">
+                          <span className="text-purple-400 font-bold">{tags.filter(function(t){ var m=columnMapping[t]; return m&&((m.type==='excel'&&m.value)||(m.type==='manual'&&m.value)); }).length}</span>/{tags.length} map
+                        </span>
+                      </div>
+                    )}
+                    {activeProjectTemplates.length > 0 && (
                       <div className="flex items-center gap-2">
                         <select
                           value={wbsStageFilter}
                           onChange={(e) => setWbsStageFilter(e.target.value)}
-                          className="w-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg text-[13px] leading-relaxed text-slate-300 rounded px-2 py-1 outline-none focus:border-indigo-500 transition-all font-bold"
+                          className="w-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 text-[12px] text-slate-300 rounded px-2 py-1 outline-none focus:border-indigo-500 transition-all font-semibold"
                         >
                           <option value="all">Tất cả giai đoạn</option>
                           {Array.from(
