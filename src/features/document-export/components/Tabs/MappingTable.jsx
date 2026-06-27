@@ -21,10 +21,10 @@ const MappingTable = ({
 }) => {
   return (
     <>
-    <div className="w-full space-y-6">
-    
-                                <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl p-5 shadow-xl">
-                                <div className="flex items-center gap-3 mb-4 relative z-20 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="h-full flex flex-col">
+
+                                <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl flex flex-col flex-1 min-h-0 overflow-hidden">
+                                <div className="flex items-center gap-3 shrink-0 relative z-20 overflow-x-auto px-4 pt-3 pb-2 scrollbar-hide border-b border-slate-700/30">
                                   {/* Filter Toggle */}
                                   <div className="flex items-center border border-transparent hover:bg-white/[0.02] rounded-lg transition-colors duration-200 overflow-hidden bg-[#0A0D14]/40 backdrop-blur-xl shrink-0 shadow-sm h-[32px]">
                                     <button
@@ -115,7 +115,7 @@ const MappingTable = ({
                                     </span>
                                   </div>
                                 </div>
-                                <div className="flex items-center justify-start gap-3 relative z-20 overflow-x-auto pb-2 scrollbar-hide">
+                                <div className="flex items-center justify-start gap-3 shrink-0 relative z-20 overflow-x-auto px-4 py-2 scrollbar-hide border-b border-slate-700/30">
     
                                   {/* Actions */}
                                   <div className="flex items-center gap-2 shrink-0">
@@ -255,7 +255,7 @@ const MappingTable = ({
                                 </div>
     
                                 {/* The Table View */}
-                                <div className="flex flex-col border border-slate-700/50 shadow-lg rounded-xl overflow-hidden bg-[#0A0D14]/40 backdrop-blur-xl shadow-xl max-h-[600px] font-sans">
+                                <div className="flex flex-col flex-1 min-h-0 overflow-hidden font-sans">
                                   <div className="flex items-center px-4 py-2 border-b border-slate-700/50 bg-[#0A0D14]/60 text-[11px] font-bold tracking-widest text-slate-500 uppercase sticky top-0 z-10 w-full min-w-[760px]">
                                     <div className="w-[15%] shrink-0 pr-2">
                                       Tên biến
@@ -268,7 +268,7 @@ const MappingTable = ({
                                     </div>
                                   </div>
     
-                                  <div className="overflow-x-auto min-h-[150px]">
+                                  <div className="flex-1 overflow-auto custom-scrollbar">
                                     <div className="min-w-[760px] flex flex-col p-2 space-y-1.5">
                                       {tagsToDisplayInMapping.length === 0 ? (
                                         <div className="text-center py-8 text-[12px] font-medium tracking-wide text-slate-500 italic">

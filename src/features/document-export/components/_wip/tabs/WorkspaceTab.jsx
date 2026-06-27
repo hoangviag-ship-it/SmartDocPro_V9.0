@@ -457,11 +457,11 @@ const WorkspaceTab = (props) => {
                 <div
                   className={`flex flex-col h-full min-w-0 transition-all duration-300 flex-1`}
                 >
-                  <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
+                  <div className="flex-1 min-h-0 overflow-hidden">
                     <div
                       className={`h-full animate-fade-in ${activeMainTab === "workspace" ? "flex gap-3 xl:gap-4" : "hidden"}`}
                     >
-                      <div className={`w-full ${activeMainTab === "workspace" ? "flex-1 h-full overflow-y-auto custom-scrollbar pr-2 space-y-3 xl:space-y-4" : ""}`}>
+                      <div className={`w-full ${activeMainTab === "workspace" ? "flex-1 h-full flex flex-col overflow-hidden" : ""}`}>
                       {/* COMPACT UPLOAD REMOVED */}
 
                       <MappingTable
