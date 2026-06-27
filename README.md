@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# SmartDoc PRO
 
-# Run and deploy your AI Studio app
+SmartDoc PRO là công cụ tự động điền và kết xuất hồ sơ theo mẫu (Word & Excel) sử dụng hệ thống biến động dạng `<<TEN_BIEN>>`, `{{TEN_BIEN}}`, hoặc `[[TEN_BIEN]]`. Ứng dụng được thiết kế nhằm tối ưu hóa việc quản lý và xử lý hồ sơ dự án xây dựng tại Việt Nam.
 
-This contains everything you need to run your app locally.
+## Hướng dẫn chạy dự án
 
-View your app in AI Studio: https://ai.studio/apps/87f05639-97a0-4226-a815-fdcad739ac10
+### Cài đặt dependencies:
+```bash
+npm install
+```
 
-## Run Locally
+### Chạy dự án ở chế độ phát triển (Development):
+```bash
+npm run dev
+```
 
-**Prerequisites:**  Node.js
+### Xây dựng bản phân phối sản phẩm (Production Build):
+```bash
+npm run build
+```
 
+### Chạy kiểm tra mã nguồn (Linter):
+```bash
+npm run lint
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Chạy kiểm thử (Testing):
+```bash
+npm run test
+```
