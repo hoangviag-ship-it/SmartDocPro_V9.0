@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDoc PRO v8.0 — Hệ thống Quản lý & Kết xuất Hồ sơ</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbxTERtSoTrBuwMNKHhrN_f42qpg_tsCY",
+            authDomain: "smartdoc-sync.firebaseapp.com",
+            projectId: "smartdoc-sync",
+            storageBucket: "smartdoc-sync.firebasestorage.app",
+            messagingSenderId: "165608470904",
+            appId: "1:165608470904:web:c35e8b1af0e5c247ac308d"
+        };
+
+        const firebaseApp = initializeApp(firebaseConfig);
+        const db = getFirestore(firebaseApp);
+
+        // Expose to window so App.jsx can access
+        window.__sdeFirestore = db;
+        window.__sdeFirestoreDoc = doc;
+        window.__sdeFirestoreGetDoc = getDoc;
+    </script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js" defer></script>
+    
+    
+    
+    
+    <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js" defer></script>
+    <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.min.js" defer></script>
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js" defer></script>
+    <script src="https://unpkg.com/docx-preview@0.3.3/dist/docx-preview.min.js" defer></script>
+    <script src="https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js" defer></script>
+
+
+    
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+
+</body>
+</html>

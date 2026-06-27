@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+        @font-face {
+            font-family: 'Wingdings';
+            src: url('https://cdn.jsdelivr.net/gh/matomo-org/travis-scripts@master/fonts/Wingdings.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'Webdings';
+            src: url('https://cdn.jsdelivr.net/gh/vscodedetector/vscode-custom-css@master/fonts/Webdings.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'Symbol';
+            src: url('https://cdn.jsdelivr.net/gh/vscodedetector/vscode-custom-css@master/fonts/Symbol.ttf') format('truetype');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        .animate-fade-in { animation: fadeIn 0.2s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .terminal-log { font-family: 'Courier New', Courier, monospace; }
+        
+                /* PHỤC HỒI UI BẢN IN GIỐNG WORD MẶC ĐỊNH CHO MODAL XEM TRƯỚC LỚN */
+        .print-modal-container { background-color: #cbd5e1 !important; }
+        .print-modal-container .docx-wrapper { padding: 40px !important; margin: 0 auto !important; min-width: max-content; display: flex; justify-content: center; pointer-events: none; background: transparent !important; }
+        .print-modal-container section.docx { margin-bottom: 20px !important; pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important; background: white !important; color: black !important; }
+        .print-modal-container section.docx * { color: black !important; }
+        
+        /* Cấu hình bản in chuẩn cho tài liệu (PDF) */
+        @media print {
+            @page {
+                margin: 1.5cm;
+            }
+            
+            body, html {
+                height: auto !important;
+                overflow: visible !important;
+                background: white !important;
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Hide body elements except root */
+            body > *:not(#root) {
+                display: none !important;
+            }
+            
+            /* Ensure container doesn't truncate height */
+            #root,
+            #root > div,
+            main,
+            main > div,
+            .print-modal-container {
+                position: static !important;
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                display: block !important;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+            }
+            
+            /* Hide all sidebar, navigation, controls, headers, buttons and select elements */
+            aside,
+            .sidebar,
+            select,
+            button,
+            .print-hide,
+            .bg-indigo-900\/90 {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            
+            .print-modal-container {
+                background-color: white !important;
+            }
+            
+            .print-modal-container .preview-scroll-area {
+                overflow: visible !important;
+                height: auto !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            /* Remove zoom transform on print */
+            .print-modal-container .preview-scroll-area > div {
+                transform: none !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                min-height: auto !important;
+            }
+            
+            .print-modal-container .docx-wrapper {
+                padding: 0 !important;
+                margin: 0 !important;
+                background: white !important;
+                display: block !important;
+                box-shadow: none !important;
+            }
+            
+            .print-modal-container section.docx {
+                margin: 0 0 2cm 0 !important;
+                box-shadow: none !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .excel-preview-wrapper {
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                width: 100% !important;
+            }
+            
+            .excel-preview-wrapper table {
+                width: 100% !important;
+                page-break-inside: auto !important;
+            }
+            
+            .excel-preview-wrapper tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+            }
+        }
+        .print-modal-container section.docx span[style*="background-color: yellow"], 
+        .print-modal-container section.docx span[style*="background-color: #FFFF00"] {
+            background-color: yellow !important;
+            color: black !important;
+        }
+    
+
+@theme {
+  --color-slate-750: #1e293b;
+  --color-slate-850: #0f172a;
+}
+
+
+/* Styling options in select to match dark mode */
+option {
+  background-color: #0A0D14;
+  color: #e2e8f0;
+}
