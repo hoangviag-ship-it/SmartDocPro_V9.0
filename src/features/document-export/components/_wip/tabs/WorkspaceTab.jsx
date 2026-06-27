@@ -5,6 +5,7 @@ import MappingTable from '../../Tabs/MappingTable';
 import ExcelDataTab from '../../Tabs/ExcelDataTab';
 import ExportTab from '../../Tabs/ExportTab';
 import DictionaryTab from '../../Tabs/DictionaryTab';
+import ExportHistoryTab from '../tabs/ExportHistoryTab';
 import AddStageModal from "../../Modals/AddStageModal";
 import RenameProcessNodeModal from "../../Modals/RenameProcessNodeModal";
 import ApprovalHistoryModal from "../../Modals/ApprovalHistoryModal";
@@ -130,7 +131,8 @@ const WorkspaceTab = (props) => {
     loadedTemplates,
     activePreviewId,
     handleBindSheetChange,
-    projects
+    projects,
+    SDE_UID
   } = props;
 
   return (
@@ -251,6 +253,16 @@ const WorkspaceTab = (props) => {
                   }`}
                 >
                   <span>🚀</span> XUẤT FILE HÀNG LOẠT
+                </button>
+                <button
+                  onClick={() => setActiveMainTab("history")}
+                  className={`px-4 py-3 text-[13px] leading-relaxed font-bold transition-all border-b-2 flex items-center justify-center gap-2 whitespace-nowrap min-w-max ${
+                    activeMainTab === "history"
+                      ? "bg-[#0A0D14]/40 backdrop-blur-xl border-indigo-500 text-indigo-400"
+                      : "border-transparent text-slate-500 hover:text-slate-400 hover:bg-[#0A0D14]/40 backdrop-blur-xl/50"
+                  }`}
+                >
+                  <span>🕓</span> LỊCH SỬ XUẤT
                 </button>
               </div>
 
@@ -657,6 +669,12 @@ const WorkspaceTab = (props) => {
                         setColumnMapping={setColumnMapping}
                         setFormData={setFormData}
                       />
+                    </div>
+                    {/* HISTORY TAB CONTENT */}
+                    <div
+                      className={`h-full flex flex-col space-y-4 xl:space-y-6 animate-fade-in ${activeMainTab === "history" ? "block" : "hidden"}`}
+                    >
+                      <ExportHistoryTab SDE_UID={SDE_UID} />
                     </div>
                   </div>
                 </div>
