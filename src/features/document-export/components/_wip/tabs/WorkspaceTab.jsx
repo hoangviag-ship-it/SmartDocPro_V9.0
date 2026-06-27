@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getBaseTag, sanitizePath } from '../../../utils/helpers';
 import { useAppStore } from '../../../../../shared/store/useAppStore';
 import MappingTable from '../../Tabs/MappingTable';
@@ -135,78 +135,51 @@ const WorkspaceTab = (props) => {
     SDE_UID
   } = props;
 
+  const [isWbsOpen, setIsWbsOpen] = useState(() => {
+    try { return localStorage.getItem('sde_wbs_open') !== 'false'; } catch { return true; }
+  });
+  const [isPreviewOpen, setIsPreviewOpen] = useState(() => {
+    try { return localStorage.getItem('sde_preview_open') !== 'false'; } catch { return true; }
+  });
+  const toggleWbs = () => {
+    const next = !isWbsOpen;
+    setIsWbsOpen(next);
+    try { localStorage.setItem('sde_wbs_open', String(next)); } catch {}
+  };
+  const togglePreview = () => {
+    const next = !isPreviewOpen;
+    setIsPreviewOpen(next);
+    try { localStorage.setItem('sde_preview_open', String(next)); } catch {}
+  };
+
   return (
     <div className={`h-full flex flex-col ${appRoute === "legal" ? "" : ""}`}>
             <div className="w-full max-w-[100%] xl:max-w-[100%] 2xl:max-w-[1800px] mx-auto pt-3 px-2 sm:px-4 pb-2 animate-fade-in flex-1 flex flex-col min-h-0">
               {activeProjectTemplates.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left mb-4">
-                  <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-lg px-3 py-2 flex justify-between items-center shadow-sm">
-                    <div>
-                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
-                        📄 File mẫu
-                      </div>
-                      <div className="text-base font-black text-white leading-none">
-                        {activeProjectTemplates.length}
-                      </div>
-                    </div>
-                    <div className="text-[9px] text-indigo-400 bg-indigo-950/50 px-1.5 py-0.5 rounded font-bold border border-indigo-900/50">
-                      {selectedTemplateIds.length} chọn
-                    </div>
-                  </div>
-                  <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-lg px-3 py-2 flex justify-between items-center shadow-sm">
-                    <div>
-                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
-                        🏷️ Biến phát hiện
-                      </div>
-                      <div className="text-base font-black text-indigo-400 leading-none">
-                        {tags.length}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-lg px-3 py-2 flex justify-between items-center shadow-sm">
-                    <div>
-                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
-                        ✏️ Đã điền (Form)
-                      </div>
-                      <div className="text-base font-black text-emerald-400 leading-none">
-                        {
-                          tags.filter(function (t) {
-                            return (
-                              formData[t] && String(formData[t]).trim() !== ""
-                            );
-                          }).length
-                        }
-                        <span className="text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 font-normal">
-                          /{tags.length}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-lg px-3 py-2 flex justify-between items-center shadow-sm">
-                    <div>
-                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
-                        🔗 Đã Map (Batch)
-                      </div>
-                      <div className="text-base font-black text-purple-400 leading-none">
-                        {
-                          tags.filter(function (t) {
-                            var m = columnMapping[t];
-                            return (
-                              m &&
-                              ((m.type === "excel" && m.value) ||
-                                (m.type === "manual" && m.value))
-                            );
-                          }).length
-                        }
-                        <span className="text-[12px] font-medium tracking-wide font-medium tracking-wide text-slate-500 font-normal">
-                          /{tags.length}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-[9px] text-purple-400 bg-purple-950/50 px-1.5 py-0.5 rounded font-bold border border-purple-900/50">
-                      {excelData.length} dòng XL
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3 mb-2 h-7 overflow-x-auto shrink-0 custom-scrollbar">
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                    <span className="text-white font-bold">{activeProjectTemplates.length}</span> mẫu
+                    {selectedTemplateIds.length > 0 && (
+                      <span className="text-[10px] text-indigo-400 bg-indigo-950/60 px-1.5 py-0.5 rounded border border-indigo-900/50">{selectedTemplateIds.length} chọn</span>
+                    )}
+                  </span>
+                  <span className="w-px h-4 bg-slate-700/80 shrink-0" />
+                  <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                    <span className="text-indigo-400 font-bold">{tags.length}</span> biến
+                  </span>
+                  <span className="w-px h-4 bg-slate-700/80 shrink-0" />
+                  <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                    <span className="text-emerald-400 font-bold">{tags.filter(function(t){ return formData[t] && String(formData[t]).trim() !== ''; }).length}</span>
+                    <span>/{tags.length} form</span>
+                  </span>
+                  <span className="w-px h-4 bg-slate-700/80 shrink-0" />
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+                    <span className="text-purple-400 font-bold">{tags.filter(function(t){ var m = columnMapping[t]; return m && ((m.type === 'excel' && m.value) || (m.type === 'manual' && m.value)); }).length}</span>
+                    <span>/{tags.length} map</span>
+                    {excelData.length > 0 && (
+                      <span className="text-[10px] text-purple-400 bg-purple-950/60 px-1.5 py-0.5 rounded border border-purple-900/50">{excelData.length} dòng XL</span>
+                    )}
+                  </span>
                 </div>
               )}
 
@@ -268,14 +241,36 @@ const WorkspaceTab = (props) => {
 
               {/* MASHTER-DETAIL WBS SPLIT LAYOUT */}
               <div className="flex flex-col xl:flex-row gap-3 xl:gap-4 items-stretch w-full flex-1 min-h-0 pb-2">
-                {/* LEFT WBS DIRECTORY PANE */}
-                <div className="w-full xl:w-[320px] 2xl:w-[380px] bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl shrink-0 flex flex-col shadow-sm overflow-hidden">
+                {/* LEFT WBS DIRECTORY PANE — collapsible */}
+                <div
+                  className="shrink-0 overflow-hidden transition-all duration-300 hidden xl:flex"
+                  style={{ width: isWbsOpen ? '320px' : '40px', minWidth: '40px' }}
+                >
+                  {/* Collapsed strip */}
+                  {!isWbsOpen && (
+                    <button
+                      onClick={toggleWbs}
+                      className="w-10 flex flex-col items-center justify-center gap-2 h-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl text-slate-600 hover:text-indigo-400 hover:border-indigo-700 transition-all group"
+                      title="Mở CÂY WBS"
+                    >
+                      <span className="text-[9px] font-bold tracking-widest uppercase text-slate-500 group-hover:text-indigo-400 transition-colors" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>CÂY WBS</span>
+                      <span className="text-slate-600 group-hover:text-indigo-400 text-xs transition-colors">▶</span>
+                    </button>
+                  )}
+                  {/* Expanded content */}
+                  {isWbsOpen && (
+                  <div className="w-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl flex flex-col overflow-hidden">
                   <div className="bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 shadow-lg p-4 flex flex-col gap-3 shrink-0">
                     <div className="flex justify-between items-center">
                       <h2 className="text-[13px] leading-relaxed font-black text-white flex items-center gap-2 tracking-wide uppercase">
                         <span>🗂️</span> CÂY THƯ MỤC WBS
                       </h2>
                       <div className="flex gap-2">
+                        <button
+                          onClick={toggleWbs}
+                          className="px-2 py-1 border border-slate-700 rounded text-[11px] text-slate-500 hover:text-slate-300 hover:border-slate-600 transition-all"
+                          title="Thu gọn WBS"
+                        >◀</button>
                         <button
                           onClick={() => {
                             if (selectedTemplateIds.length > 0) {
@@ -294,7 +289,7 @@ const WorkspaceTab = (props) => {
                             }
                           }}
                           className={
-                            "px-2 py-1 border rounded text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold transition-all " +
+                            "px-2 py-1 border rounded text-[12px] font-bold transition-all " +
                             (selectedTemplateIds.length > 0
                               ? "bg-white/[0.03] backdrop-blur-md text-slate-300 border-slate-700 hover:bg-white/[0.06] backdrop-blur-lg"
                               : "bg-indigo-900/30 text-indigo-400 border-indigo-900/50 hover:bg-indigo-900/60")
@@ -311,7 +306,7 @@ const WorkspaceTab = (props) => {
                         </button>
                         <button
                           onClick={() => setIsProcessModalOpen(true)}
-                          className="px-2 py-1 bg-fuchsia-900/30 text-fuchsia-400 hover:bg-fuchsia-900/60 border border-fuchsia-900 rounded text-[12px] font-medium tracking-wide font-medium tracking-wide font-bold transition-all"
+                          className="px-2 py-1 bg-fuchsia-900/30 text-fuchsia-400 hover:bg-fuchsia-900/60 border border-fuchsia-900 rounded text-[12px] font-bold transition-all"
                           title="Tổ chức quy trình/Thư mục dự án"
                         >
                           ⚙️
@@ -513,6 +508,16 @@ const WorkspaceTab = (props) => {
                       </div>
                     )}
                   </div>
+                  </div>
+                  )}
+                </div>
+
+                {/* WBS pane — mobile always visible */}
+                <div className="block xl:hidden w-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden shrink-0">
+                  <div className="p-3 border-b border-slate-700/50">
+                    <h2 className="text-[12px] font-bold text-white flex items-center gap-2 uppercase">🗂️ CÂY WBS</h2>
+                  </div>
+                  <div className="p-3 text-[11px] text-slate-500 text-center">Xem trên màn hình lớn để dùng WBS</div>
                 </div>
 
                 <div
@@ -566,27 +571,47 @@ const WorkspaceTab = (props) => {
 />
                       </div> {/* END OF MAPPING INNER CONTENT */}
 
-                    {/* LIVE PREVIEW PANE (ONLY IN FORM TAB) */}
+                    {/* LIVE PREVIEW PANE — collapsible */}
                     {activeMainTab === "workspace" && (
-                      <div className="w-[45%] hidden xl:flex flex-col bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl overflow-hidden relative h-full">
-                        <div className="flex justify-between items-center px-4 py-3 bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 shadow-lg print-hide shrink-0 z-10">
-                          <span className="text-[12px] font-medium tracking-wide font-black text-indigo-400 uppercase tracking-widest flex items-center gap-1.5">
-                            <span>👀</span> PREVIEW LIVE
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <button onClick={() => setZoomLevel(z => Math.max(0.3, z - 0.1))} className="px-2 py-1 bg-slate-800 rounded hover:bg-slate-700 text-white font-bold text-xs">➖</button>
-                            <span className="text-white text-xs font-bold w-10 text-center">{Math.round(zoomLevel * 100)}%</span>
-                            <button onClick={() => setZoomLevel(z => Math.min(2, z + 0.1))} className="px-2 py-1 bg-slate-800 rounded hover:bg-slate-700 text-white font-bold text-xs">➕</button>
-                          </div>
-                        </div>
-                        <div className="flex-1 overflow-auto bg-slate-900/50 custom-scrollbar p-6 flex justify-center relative">
-                          {isRenderingPreview && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-50">
-                              <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                      <div
+                        className="hidden xl:flex shrink-0 overflow-hidden transition-all duration-300"
+                        style={{ width: isPreviewOpen ? '45%' : '40px', minWidth: '40px' }}
+                      >
+                        {/* Collapsed strip */}
+                        {!isPreviewOpen && (
+                          <button
+                            onClick={togglePreview}
+                            className="w-10 flex flex-col items-center justify-center gap-2 h-full bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl text-slate-600 hover:text-indigo-400 hover:border-indigo-700 transition-all group"
+                            title="Mở Preview"
+                          >
+                            <span className="text-[9px] font-bold tracking-widest uppercase text-slate-500 group-hover:text-indigo-400 transition-colors" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>PREVIEW</span>
+                            <span className="text-slate-600 group-hover:text-indigo-400 text-xs transition-colors">▶</span>
+                          </button>
+                        )}
+                        {/* Expanded content */}
+                        {isPreviewOpen && (
+                          <div className="flex flex-col bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl overflow-hidden relative h-full w-full">
+                            <div className="flex justify-between items-center px-4 py-3 bg-[#0A0D14]/40 backdrop-blur-xl border-b border-slate-700/50 print-hide shrink-0 z-10">
+                              <span className="text-[12px] font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <span>👀</span> PREVIEW LIVE
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <button onClick={togglePreview} className="px-2 py-1 bg-slate-800/60 rounded hover:bg-slate-700 text-slate-400 hover:text-white font-bold text-xs transition-all" title="Thu preview">◀</button>
+                                <button onClick={() => setZoomLevel(z => Math.max(0.3, z - 0.1))} className="px-2 py-1 bg-slate-800 rounded hover:bg-slate-700 text-white font-bold text-xs">➖</button>
+                                <span className="text-white text-xs font-bold w-10 text-center">{Math.round(zoomLevel * 100)}%</span>
+                                <button onClick={() => setZoomLevel(z => Math.min(2, z + 0.1))} className="px-2 py-1 bg-slate-800 rounded hover:bg-slate-700 text-white font-bold text-xs">➕</button>
+                              </div>
                             </div>
-                          )}
-                          <div id="docx-preview-inline-container" className="bg-white shadow-2xl origin-top transition-transform duration-200" style={{ transform: `scale(${zoomLevel})` }}></div>
-                        </div>
+                            <div className="flex-1 overflow-auto bg-slate-900/50 custom-scrollbar p-6 flex justify-center relative">
+                              {isRenderingPreview && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-50">
+                                  <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                              )}
+                              <div id="docx-preview-inline-container" className="bg-white shadow-2xl origin-top transition-transform duration-200" style={{ transform: `scale(${zoomLevel})` }}></div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div> {/* END OF FORM AND FILES TAB OUTER WRAPPER */}
