@@ -55,6 +55,7 @@ const ProjectModal = React.lazy(() => import("./components/Modals/ProjectModal")
 const SettingsModal = React.lazy(() => import("./components/Modals/SettingsModal"));
 const AuthorModal = React.lazy(() => import("./components/Modals/AuthorModal"));
 const ConfirmModal = React.lazy(() => import("./components/Modals/ConfirmModal"));
+const AutoMapModal = React.lazy(() => import("./components/Modals/AutoMapModal"));
 const LibraryModal = React.lazy(() => import("./components/Modals/LibraryModal"));
 const PreviewModal = React.lazy(() => import("./components/Modals/PreviewModal"));
 const WorkspaceTab = React.lazy(() => import("./components/_wip/tabs/WorkspaceTab"));
@@ -1111,6 +1112,15 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
     newWbs: [],
     newKeys: [],
   });
+
+  // Bảng gợi ý ghép biến tự động (hiện khi nạp Excel) — người dùng chọn ghép tự động
+  // hay tự map tay.
+  var [autoMapModal, setAutoMapModal] = useState({
+    show: false,
+    proposals: [], // [{ tag, col, score }]
+    keptManual: [], // biến đã nhập tay sẽ được giữ nguyên
+  });
+  var autoMapSigRef = useRef("");
 
   var [excelData, setExcelData] = useState([]);
   useEffect(() => {
@@ -2318,9 +2328,65 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
     showToast("Đã điền dữ liệu dòng " + (rowIndex + 1) + " vào Form!");
   };
 
+  // Tính TRƯỚC danh sách biến sẽ được ghép tự động (không áp dụng ngay) để hiện
+  // bảng cho người dùng xem & quyết định.
+  var computeAutoMapProposals = function () {
+    if (excelColumns.length === 0 || tags.length === 0)
+      return { proposals: [], keptManual: [] };
+    var proposals = [];
+    var keptManual = [];
+    tags.forEach(function (tag) {
+      var existing = columnMapping[tag];
+      // Đã map sẵn cột Excel -> không gợi ý lại.
+      if (existing && existing.type === "excel" && existing.value) return;
+      var isFilledManual =
+        existing && existing.type === "manual" && existing.value !== "";
+      var bestCol = null;
+      var bestScore = 0;
+      excelColumns.forEach(function (col) {
+        var score = calculateVietnameseMatchScore(tag, col);
+        if (score > bestScore) {
+          bestScore = score;
+          bestCol = col;
+        }
+      });
+      if (bestCol && bestScore >= 0.5) {
+        if (isFilledManual) keptManual.push(tag);
+        else proposals.push({ tag: tag, col: bestCol, score: bestScore });
+      }
+    });
+    return { proposals: proposals, keptManual: keptManual };
+  };
+
+  // Áp dụng đúng các gợi ý đã chọn vào cấu hình map.
+  var applyAutoMapProposals = function (proposals) {
+    if (!proposals || proposals.length === 0) return;
+    setColumnMapping(function (prev) {
+      var next = Object.assign({}, prev);
+      proposals.forEach(function (p) {
+        next[p.tag] = { type: "excel", value: p.col };
+      });
+      return next;
+    });
+    showToast("Đã tự động ghép " + proposals.length + " biến với cột Excel.");
+  };
+
+  // Khi có cột Excel + biến: hiện bảng gợi ý 1 lần cho mỗi bộ (cột × biến) mới,
+  // KHÔNG tự ghép ngầm nữa — để người dùng tự quyết định.
   useEffect(
     function () {
-      handleAutoMap();
+      if (excelColumns.length === 0 || tags.length === 0) return;
+      var sig = excelColumns.join("||") + "##" + tags.join("||");
+      if (autoMapSigRef.current === sig) return;
+      autoMapSigRef.current = sig;
+      var result = computeAutoMapProposals();
+      if (result.proposals.length === 0 && result.keptManual.length === 0)
+        return;
+      setAutoMapModal({
+        show: true,
+        proposals: result.proposals,
+        keptManual: result.keptManual,
+      });
     },
     [excelColumns, tags],
   );
@@ -2771,6 +2837,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
     var files = e.target && e.target.files ? e.target.files : e;
     if (!files || files.length === 0) return;
     var fileArray = Array.from(files);
+    var targetEl = e.target;
 
     var currentUploadedNames = new Set(
       loadedTemplates
@@ -2780,6 +2847,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         .map((t) => t.originalName),
     );
     var newValidFiles = [];
+    var dupNames = [];
     for (let file of fileArray) {
       if (
         file.name.indexOf(".docx") === -1 &&
@@ -2788,17 +2856,38 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         showToast("Chỉ hỗ trợ .docx hoặc .xlsx: " + file.name, "error");
         continue;
       }
-      if (currentUploadedNames.has(file.name)) {
-        showToast("Tệp trùng tên được thêm mới: " + file.name, "info");
-      }
+      if (currentUploadedNames.has(file.name)) dupNames.push(file.name);
       currentUploadedNames.add(file.name);
       newValidFiles.push(file);
     }
-    if (newValidFiles.length === 0) {
-      if (e.target && e.target.value) e.target.value = "";
+    // Đã giữ tham chiếu File trong newValidFiles -> có thể reset input ngay để
+    // chọn lại đúng file đó lần sau vẫn kích hoạt onChange (kể cả khi bấm Hủy).
+    if (targetEl && targetEl.value) targetEl.value = "";
+    if (newValidFiles.length === 0) return;
+
+    // Cảnh báo trùng tên tệp: hỏi OK/Hủy trước khi nạp.
+    if (dupNames.length > 0) {
+      setConfirmModal({
+        show: true,
+        title: "Tệp Word trùng tên",
+        desc:
+          "Dự án đã có " +
+          dupNames.length +
+          " tệp cùng tên (" +
+          dupNames.join(", ") +
+          "). Nạp tiếp sẽ tạo bản trùng trong danh sách. Bạn vẫn muốn nạp?",
+        btnConfirm: "Vẫn nạp",
+        action: function () {
+          setConfirmModal({ show: false, action: null, title: "", desc: "", btnConfirm: "Đồng ý" });
+          processWordFiles(newValidFiles, targetEl);
+        },
+      });
       return;
     }
+    processWordFiles(newValidFiles, targetEl);
+  };
 
+  var processWordFiles = async function (newValidFiles, targetEl) {
     setLoadingStatus("Đang nạp file vào hệ thống...");
 
     var newTemplatesBatch = [];
@@ -2873,10 +2962,10 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         return;
       }
 
-      finalizeWordUpload(newTemplatesBatch, newTemplateIdsBatch, e.target);
+      finalizeWordUpload(newTemplatesBatch, newTemplateIdsBatch, targetEl);
     } else {
       setLoadingStatus(null);
-      if (e.target && e.target.value) e.target.value = "";
+      if (targetEl && targetEl.value) targetEl.value = "";
     }
   };
 
@@ -4385,6 +4474,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       showToast("H\u1ec7 th\u1ed1ng \u0111ang n\u1ea1p th\u01b0 vi\u1ec7n Excel. M\u1eddi th\u1eed l\u1ea1i.", "error");
       return;
     }
+    var targetEl = e.target;
     try {
       var newWbs = [];
       var newKeys = [];
@@ -4412,26 +4502,60 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
           }
         });
       }
-      var newVars = [];
-      allHeaders.forEach(function (tag) {
-        if (!globalDictionary[tag]) {
-          var canonical = resolveSynonym(tag, globalDictionary);
-          if (canonical === tag) { newVars.push(tag); }
-        }
-      });
-      if (newVars.length > 0) {
-        setExcelAuditModal({
+      // \u0110\u00e3 \u0111\u1ecdc xong workbook -> reset input ngay (k\u1ec3 c\u1ea3 khi b\u1ea5m H\u1ee7y \u1edf h\u1ed9p tho\u1ea1i).
+      if (targetEl && targetEl.value) targetEl.value = "";
+
+      // C\u1ea3nh b\u00e1o tr\u00f9ng t\u00ean t\u1ec7p Excel: h\u1ecfi OK/H\u1ee7y tr\u01b0\u1edbc khi n\u1ea1p.
+      var existingExcelNames = new Set(
+        (uploadedWorkbooks || []).map(function (wb) { return wb.fileName; }),
+      );
+      var dupExcel = newWbs
+        .map(function (wb) { return wb.fileName; })
+        .filter(function (n) { return existingExcelNames.has(n); });
+      if (dupExcel.length > 0) {
+        setConfirmModal({
           show: true,
-          unknownTags: newVars,
-          newWbs: newWbs,
-          newKeys: newKeys,
+          title: "T\u1ec7p Excel tr\u00f9ng t\u00ean",
+          desc:
+            "\u0110\u00e3 n\u1ea1p " +
+            dupExcel.length +
+            " t\u1ec7p Excel c\u00f9ng t\u00ean tr\u01b0\u1edbc \u0111\u00f3 (" +
+            dupExcel.join(", ") +
+            "). N\u1ea1p l\u1ea1i s\u1ebd t\u1ea1o b\u1ea3n tr\u00f9ng. B\u1ea1n v\u1eabn mu\u1ed1n n\u1ea1p?",
+          btnConfirm: "V\u1eabn n\u1ea1p",
+          action: function () {
+            setConfirmModal({ show: false, action: null, title: "", desc: "", btnConfirm: "\u0110\u1ed3ng \u00fd" });
+            proceedExcelUpload(newWbs, newKeys, allHeaders, targetEl);
+          },
         });
-      } else {
-        finalizeExcelUpload(newWbs, newKeys, e.target, true);
+        return;
       }
+      proceedExcelUpload(newWbs, newKeys, allHeaders, targetEl);
     } catch (err) {
+      console.warn("handleExcelUpload error:", err);
       showToast("L\u1ed7i c\u1ea5u tr\u00fac t\u1ec7p Excel", "error");
-      if (e.target && e.target.value) e.target.value = "";
+      if (targetEl && targetEl.value) targetEl.value = "";
+    }
+  };
+
+  // Sau khi \u0111\u00e3 x\u00e1c nh\u1eadn (ho\u1eb7c kh\u00f4ng tr\u00f9ng t\u00ean): ki\u1ec3m tra bi\u1ebfn l\u1ea1 r\u1ed3i n\u1ea1p Excel.
+  var proceedExcelUpload = function (newWbs, newKeys, allHeaders, targetEl) {
+    var newVars = [];
+    allHeaders.forEach(function (tag) {
+      if (!globalDictionary[tag]) {
+        var canonical = resolveSynonym(tag, globalDictionary);
+        if (canonical === tag) { newVars.push(tag); }
+      }
+    });
+    if (newVars.length > 0) {
+      setExcelAuditModal({
+        show: true,
+        unknownTags: newVars,
+        newWbs: newWbs,
+        newKeys: newKeys,
+      });
+    } else {
+      finalizeExcelUpload(newWbs, newKeys, targetEl, true);
     }
   };
 
@@ -5840,6 +5964,17 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       <ConfirmModal
         confirmModal={confirmModal}
         setConfirmModal={setConfirmModal}
+      />
+
+      <AutoMapModal
+        autoMapModal={autoMapModal}
+        onApply={function () {
+          applyAutoMapProposals(autoMapModal.proposals);
+          setAutoMapModal({ show: false, proposals: [], keptManual: [] });
+        }}
+        onClose={function () {
+          setAutoMapModal({ show: false, proposals: [], keptManual: [] });
+        }}
       />
 
       <AuthorModal
