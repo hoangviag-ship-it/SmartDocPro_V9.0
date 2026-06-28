@@ -15,6 +15,7 @@ import {
   FileDown,
   Sun,
   Moon,
+  HelpCircle,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -147,6 +148,15 @@ const Sidebar = () => {
         >
           <Printer className="w-5 h-5 shrink-0 text-emerald-500" />
           <span className="text-sm font-medium whitespace-nowrap overflow-hidden">Bản in Full</span>
+        </button>
+
+        <button
+          onClick={() => triggerAppAction('GUIDE')}
+          title={!isExpanded ? 'Hướng dẫn sử dụng' : undefined}
+          className="relative flex items-center gap-3 px-2.5 py-2 rounded-xl transition-all duration-200 text-left text-indigo-300 hover:text-indigo-200 hover:bg-indigo-900/30 w-full"
+        >
+          <HelpCircle className="w-5 h-5 shrink-0 text-indigo-400" />
+          <span className="text-sm font-medium whitespace-nowrap overflow-hidden">Hướng dẫn</span>
         </button>
       </div>
 
