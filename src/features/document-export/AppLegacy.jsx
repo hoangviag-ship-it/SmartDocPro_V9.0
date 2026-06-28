@@ -1050,9 +1050,23 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         setIsSettingsModalOpen(true);
       } else if (appActionTrigger.action === 'HISTORY') {
         setIsApprovalHistoryModalOpen(true);
+      } else if (appActionTrigger.action === 'GUIDE') {
+        setShowHelp(true);
       }
     }
   }, [appActionTrigger]);
+
+  // Lần đầu sử dụng (chưa từng xem) -> tự mở panel Hướng dẫn 1 lần.
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem('sde_guide_seen_v9')) {
+        setShowHelp(true);
+        localStorage.setItem('sde_guide_seen_v9', '1');
+      }
+    } catch (e) {
+      console.warn('guide auto-open check failed:', e);
+    }
+  }, []);
   var [editingTemplate, setEditingTemplate] = useState(null);
   var [activeEditMethod, setActiveEditMethod] = useState("offline");
   var [docxXmlParts, setDocxXmlParts] = useState([]);

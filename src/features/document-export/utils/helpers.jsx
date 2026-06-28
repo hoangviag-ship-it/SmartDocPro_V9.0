@@ -1225,6 +1225,57 @@ export function getDelimiterBadge(type) {
 
 const CHAPTERS = [
   {
+    id: "start",
+    icon: "🎯",
+    label: "Bắt đầu nhanh",
+    title: "Bắt đầu nhanh — 6 bước tạo hồ sơ đầu tiên",
+    color: "indigo",
+    intro:
+      "Làm theo 6 bước dưới đây để đi từ một file Word mẫu tới hồ sơ hoàn chỉnh. Mỗi bước có ví dụ cụ thể bạn có thể làm theo y hệt.",
+    sections: [
+      {
+        step: 1,
+        heading: "Tạo dự án",
+        body: "Bấm nút “Dự án Mới” ở thanh bên trái, đặt tên dự án rồi bấm Tạo. Mọi mẫu Word và dữ liệu sẽ được gom trong dự án này.",
+        example: "Dự án Mới  →  Tên: “Khu dân cư Chợ Mới”  →  Tạo",
+      },
+      {
+        step: 2,
+        heading: "Nạp file mẫu Word",
+        body: "Bấm “Nạp File Mẫu” và chọn file .docx của bạn. File mẫu là file Word bình thường, chỉ khác ở chỗ những phần cần điền tự động được thay bằng thẻ biến dạng <<TÊN_BIẾN>>.",
+        example:
+          "Trong file Word mẫu, gõ:\n\nCông trình: <<TEN_DU_AN>>\nĐịa điểm: <<DIA_DIEM>>\nNgày lập: <<TODAY>>",
+      },
+      {
+        step: 3,
+        heading: "(Tùy chọn) Nạp dữ liệu Excel",
+        body: "Nếu muốn xuất HÀNG LOẠT (mỗi dòng Excel thành 1 file Word), bấm “Nạp DL Excel”. Bỏ qua bước này nếu chỉ làm 1 hồ sơ và muốn tự gõ tay.",
+        example:
+          "Excel:  | Tên dự án          | Địa điểm  |\n        | Khu dân cư Chợ Mới | Chợ Mới   |\n        | Trường THCS An Bình | An Bình  |\n→ 2 dòng = 2 file Word xuất ra.",
+      },
+      {
+        step: 4,
+        heading: "Gán dữ liệu cho biến (Map)",
+        body: "Ở “Bảng làm việc”, mỗi biến có 2 cách điền: chọn cột Excel từ ô “Chọn cột Excel”, HOẶC bấm “Nhập tay” để gõ trực tiếp. Lưu ý: nếu bạn đã nhập tay rồi mới nạp Excel trùng tên cột, app sẽ GIỮ giá trị nhập tay và báo cho bạn — không tự ghi đè.",
+        example:
+          "TEN_DU_AN  →  Chọn cột Excel: “Tên dự án”\nDIA_DIEM   →  Nhập tay: “Chợ Mới”",
+      },
+      {
+        step: 5,
+        heading: "Xem trước trực tiếp (Preview Live)",
+        body: "Khung Preview bên phải cập nhật NGAY khi bạn gõ. Phần được tô vàng là chỗ vừa điền / cần kiểm tra lại. Có thể đổi khổ rộng màn hình trong Cài đặt → Giao diện (2K trải dài / 1080p thu gọn).",
+        example: "Gõ giá trị ở bên trái → chữ trong trang A4 bên phải đổi theo tức thì.",
+      },
+      {
+        step: 6,
+        heading: "Xuất hồ sơ",
+        body: "Bấm “Xuất hồ sơ”. Một hồ sơ lẻ → tải về 1 file Word. Nhiều dòng Excel → chọn chế độ xuất: ZIP (tải gói về máy) hoặc Thư mục (ghi thẳng vào thư mục trên PC, chỉ Chrome/Edge).",
+        example:
+          "Chế độ ZIP:    tải HoSo.zip gồm 2 file Word\nChế độ Thư mục: lưu thẳng vào D:\\HoSo\\... trên máy",
+      },
+    ],
+  },
+  {
     id: "overview",
     icon: "🚀",
     label: "Tính năng V9.0",
@@ -1326,7 +1377,7 @@ const CHAPTER_COLOR_MAP = {
 export function HelpGuide(props) {
   var open = props.open,
     onClose = props.onClose;
-  var [activeChapter, setActiveChapter] = useState("overview");
+  var [activeChapter, setActiveChapter] = useState("start");
   if (!open) return null;
   var chapter =
     CHAPTERS.find(function (c) {
@@ -1376,20 +1427,47 @@ export function HelpGuide(props) {
             </button>
           </div>
           <div className="flex-1 overflow-y-auto px-6 py-5 bg-[#0A0D14]">
+            {chapter.intro && (
+              <p className="text-[13px] leading-relaxed text-slate-400 mb-5 whitespace-pre-wrap">
+                {chapter.intro}
+              </p>
+            )}
             {chapter.sections.map(function (sec, i) {
               return (
-                <div key={i} className="mb-6">
-                  <h4
-                    className={
-                      "text-[12px] font-medium tracking-wide font-black uppercase tracking-widest mb-2 " +
-                      cc.text
-                    }
-                  >
-                    {sec.heading}
-                  </h4>
-                  <p className="text-[13px] leading-relaxed text-slate-300 leading-relaxed mb-3 whitespace-pre-wrap">
-                    {sec.body}
-                  </p>
+                <div key={i} className="mb-6 flex gap-3">
+                  {sec.step != null && (
+                    <div
+                      className={
+                        "shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-black text-white " +
+                        cc.bg
+                      }
+                    >
+                      {sec.step}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h4
+                      className={
+                        "text-[12px] font-black uppercase tracking-widest mb-2 " +
+                        cc.text
+                      }
+                    >
+                      {sec.heading}
+                    </h4>
+                    <p className="text-[13px] leading-relaxed text-slate-300 mb-3 whitespace-pre-wrap">
+                      {sec.body}
+                    </p>
+                    {sec.example && (
+                      <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5">
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
+                          Ví dụ
+                        </div>
+                        <pre className="text-[12px] leading-relaxed text-slate-200 font-mono whitespace-pre-wrap break-words m-0">
+                          {sec.example}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
