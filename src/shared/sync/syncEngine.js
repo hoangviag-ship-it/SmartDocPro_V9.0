@@ -113,6 +113,7 @@ export async function pullInitial(uid, SDE_UID) {
 // ---- Lắng nghe real-time từ thiết bị khác ----
 export function subscribe(uid, SDE_UID, onRemoteApplied) {
   const ref = doc(db, 'users', uid);
+  let isFirstSnapshot = true;
   return onSnapshot(
     ref,
     { includeMetadataChanges: false },
@@ -121,6 +122,13 @@ export function subscribe(uid, SDE_UID, onRemoteApplied) {
       if (snap.metadata.hasPendingWrites) return; // ghi cục bộ chưa lên server
       const d = snap.data();
       if (!d?.data) return;
+      // Snapshot ĐẦU TIÊN chỉ là trạng thái hiện có (đã áp ở pullInitial trước khi
+      // mount). KHÔNG được kích hoạt reload — nếu lastWriter là thiết bị khác sẽ gây
+      // vòng lặp reload nhấp nháy & kẹt ở màn "Đang kết nối tài khoản…".
+      if (isFirstSnapshot) {
+        isFirstSnapshot = false;
+        return;
+      }
       if (d.lastWriter === DEVICE_ID) return; // chính mình vừa ghi -> bỏ qua
       applyState(d.data);
       if (typeof onRemoteApplied === 'function') onRemoteApplied(d);

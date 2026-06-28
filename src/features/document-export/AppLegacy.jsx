@@ -225,9 +225,9 @@ export default function MainApp({ isEmbedded }) {
             <span className="text-3xl">🚀</span>
           </div>
           <h1 className="text-2xl font-black text-white text-center tracking-tight leading-tight">
-            SmarDoctPro
+            SmartDocPro
             <br />
-            <span className="text-indigo-400">V7.0.0</span>
+            <span className="text-indigo-400">V9.0</span>
           </h1>
           <p className="text-[13px] leading-relaxed text-slate-400 text-center mt-2 mb-8 font-medium">
             Hệ thống xử lý văn bản AI tự động
@@ -2720,7 +2720,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       var html =
         '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
         '<head><meta charset="utf-8"><title>Danh Sach Bien</title></head><body>' +
-        "<h2>TỪ ĐIỂN BIẾN TOÀN CỤC (SmarDoctPro Template)</h2>" +
+        "<h2>TỪ ĐIỂN BIẾN TOÀN CỤC (SmartDocPro Template)</h2>" +
         "<p>Bảng dưới đây liệt kê các biến đã có trong Hệ thống. Bạn có thể chép (Copy) các thẻ theo cú pháp {Tên Biến} dán vào thiết kế File mẫu Word của bạn:</p>" +
         '<table border="1" style="border-collapse: collapse; width: 100%; border: 1px solid black;">' +
         '<tr style="background-color: #f2f2f2;"><th>Mã Biến (Tag)</th><th>Mô tả / Ý nghĩa</th><th>Cú pháp trong Word</th></tr>';
@@ -4986,9 +4986,9 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       <div className={`${isEmbedded ? 'hidden' : 'flex'} w-16 xl:w-56 bg-[#0A0D14]/40 backdrop-blur-xl border-r border-slate-700/50 shadow-lg flex-col h-full shrink-0 z-40 transition-all duration-300`}>
         <div className="h-14 border-b border-slate-700/50 shadow-lg flex items-center justify-center xl:justify-start px-0 xl:px-4 shrink-0 bg-[#0A0D14]/40 backdrop-blur-xl/50">
           <h1 className="text-sm font-black text-white tracking-tight leading-none hidden xl:block">
-            SmarDoct<span className="text-indigo-500">PRO</span>
+            SmartDoc<span className="text-indigo-500">PRO</span>
             <span className="ml-2 bg-indigo-600 rounded px-1.5 py-0.5 text-[8px] font-bold text-white uppercase tracking-wider relative -top-0.5">
-              V7.0
+              V9.0
             </span>
           </h1>
           <h1 className="text-sm font-black text-white tracking-tight leading-none xl:hidden block">

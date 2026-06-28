@@ -80,7 +80,7 @@ const Sidebar = () => {
         </div>
         <div className="flex flex-col overflow-hidden">
           <span className="text-white font-bold tracking-wide text-base leading-tight whitespace-nowrap">SmartDoc</span>
-          <span className="text-[10px] text-indigo-400 font-semibold tracking-widest whitespace-nowrap">PRO v8.0</span>
+          <span className="text-[10px] text-indigo-400 font-semibold tracking-widest whitespace-nowrap">PRO v9.0</span>
         </div>
       </div>
 
