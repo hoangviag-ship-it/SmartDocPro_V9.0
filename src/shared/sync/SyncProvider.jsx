@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef, createContext } from 'react';
-import { onAuthChange, signInWithGoogle, signOutUser } from './firebase';
+import { onAuthChange, signInWithGoogle, signOutUser, completeRedirectSignIn } from './firebase';
 import {
   uidFromEmail, pullInitial, startAutoPush, subscribe, pushNow, collectState,
 } from './syncEngine';
@@ -49,6 +49,9 @@ export default function SyncProvider({ children }) {
       setTimeout(() => window.location.reload(), 700);
     }
   }, [showToast]);
+
+  // Hoàn tất luồng đăng nhập bằng redirect (khi popup bị chặn) ngay khi app mở lại.
+  useEffect(() => { completeRedirectSignIn(); }, []);
 
   // Theo dõi trạng thái đăng nhập
   useEffect(() => {
