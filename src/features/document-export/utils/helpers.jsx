@@ -1227,8 +1227,8 @@ const CHAPTERS = [
   {
     id: "overview",
     icon: "🚀",
-    label: "Tính năng V7.0.0",
-    title: "SmarDoctPro - V7.0.0",
+    label: "Tính năng V9.0",
+    title: "SmartDocPro - V9.0",
     color: "indigo",
     sections: [
       {
@@ -1287,7 +1287,7 @@ const CHAPTERS = [
     sections: [
       {
         heading: "Giới thiệu",
-        body: "SmarDoctPro hỗ trợ tính năng xuất đoạn văn bản có điều kiện, giúp bạn tạo MỘT mẫu Word duy nhất dùng chung cho nhiều file/chủ đầu tư khác nhau mà không cần làm nhiều file Word khác nhau.",
+        body: "SmartDocPro hỗ trợ tính năng xuất đoạn văn bản có điều kiện, giúp bạn tạo MỘT mẫu Word duy nhất dùng chung cho nhiều file/chủ đầu tư khác nhau mà không cần làm nhiều file Word khác nhau.",
       },
       {
         heading: "Cách sử dụng",

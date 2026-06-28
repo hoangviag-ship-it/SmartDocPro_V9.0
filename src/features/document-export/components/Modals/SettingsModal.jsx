@@ -325,7 +325,7 @@ const SettingsModal = ({
                     </p>
                     <p className="flex justify-between pb-1">
                       <span className="text-slate-500 font-medium">Phiên bản Bản quyền:</span>
-                      <span className="text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded">SmarDoctPro - V7.0.0 - 2026</span>
+                      <span className="text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded">SmartDocPro - V9.0 - 2026</span>
                     </p>
                   </div>
                 </div>

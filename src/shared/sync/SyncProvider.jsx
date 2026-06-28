@@ -200,7 +200,9 @@ export default function SyncProvider({ children }) {
         <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 rotate-3">
           <span className="text-3xl">🚀</span>
         </div>
-        <h1 className="text-2xl font-black text-white text-center">SmartDoc PRO</h1>
+        <h1 className="text-2xl font-black text-white text-center">
+          SmartDoc PRO <span className="text-indigo-400">V9.0</span>
+        </h1>
         <p className="text-[13px] text-slate-400 text-center mt-2 mb-7">Đăng nhập để đồng bộ trên mọi thiết bị</p>
         <button
           onClick={handleSignIn}
