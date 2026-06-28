@@ -135,6 +135,13 @@ const WorkspaceTab = (props) => {
     SDE_UID
   } = props;
 
+  // Độ phân giải hiển thị (Cài đặt > Giao diện): '2k' = trải dài, '1080p' = thu gọn.
+  // Điều chỉnh bề rộng cột WBS & Preview để layout vừa với màn hình tương ứng.
+  const screenResolution = useAppStore((s) => s.screenResolution);
+  const isWideScreen = screenResolution === '2k';
+  const wbsWidth = isWideScreen ? '340px' : '280px';
+  const previewWidth = isWideScreen ? '52%' : '38%';
+
   const [isWbsOpen, setIsWbsOpen] = useState(() => {
     try { return localStorage.getItem('sde_wbs_open') !== 'false'; } catch { return true; }
   });
@@ -160,7 +167,7 @@ const WorkspaceTab = (props) => {
                 {/* LEFT WBS DIRECTORY PANE — collapsible */}
                 <div
                   className="shrink-0 overflow-hidden transition-all duration-300 hidden xl:flex"
-                  style={{ width: isWbsOpen ? '320px' : '40px', minWidth: '40px' }}
+                  style={{ width: isWbsOpen ? wbsWidth : '40px', minWidth: '40px' }}
                 >
                   {/* Collapsed strip */}
                   {!isWbsOpen && (
@@ -509,7 +516,7 @@ const WorkspaceTab = (props) => {
                     {activeMainTab === "workspace" && (
                       <div
                         className="hidden xl:flex shrink-0 overflow-hidden transition-all duration-300"
-                        style={{ width: isPreviewOpen ? '45%' : '40px', minWidth: '40px' }}
+                        style={{ width: isPreviewOpen ? previewWidth : '40px', minWidth: '40px' }}
                       >
                         {/* Collapsed strip */}
                         {!isPreviewOpen && (

@@ -174,3 +174,11 @@ html.light-theme option {
   background-color: #f8fafc;
   color: #0f172a;
 }
+
+:root {
+  --app-font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --app-zoom: 1;
+  --app-density: 1;
+}
+body, .font-sans { font-family: var(--app-font-family) !important; }
+#root { zoom: var(--app-zoom); }

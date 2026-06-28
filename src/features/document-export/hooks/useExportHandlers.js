@@ -3,8 +3,9 @@ import {
   getCleanTextFromZip, sanitizePath, safeDeepClone, base64ToBuffer, safeFormatNumber, 
   soThanhChu, removeVietnameseTones, normalizeKey, levenshtein, calculateVietnameseMatchScore, 
   stripXmlTags, escapeXml, buildWordTableXml, extractAllTags, getBaseTag, calculateFinalValueForTag, 
-  escapeXmlText, unescapeXmlText, splitXmlAndTexts, joinPartsToXml, replaceTagsInXml 
+  escapeXmlText, unescapeXmlText, splitXmlAndTexts, joinPartsToXml, replaceTagsInXml
 } from '../utils/helpers';
+import { getUsableLocalDir, rememberLocalDir } from '../utils/localDir';
 
 export const useExportHandlers = ({
   excelColumns,
@@ -454,9 +455,15 @@ export const useExportHandlers = ({
         );
       } else {
         try {
-          localDirHandle = await window.showDirectoryPicker({
-            mode: "readwrite",
-          });
+          // Ưu tiên thư mục đã ghi nhớ (Cài đặt → Hệ thống); nếu chưa có/từ chối
+          // quyền thì mở hộp chọn và ghi nhớ lại cho lần sau.
+          localDirHandle = await getUsableLocalDir();
+          if (!localDirHandle) {
+            localDirHandle = await window.showDirectoryPicker({
+              mode: "readwrite",
+            });
+            await rememberLocalDir(localDirHandle);
+          }
         } catch (err) {
           showToast("Đã hủy chọn thư mục đầu ra", "error");
           return;
