@@ -899,15 +899,16 @@ const ProcessModal = ({
                                           <select
                                             onChange={(e) => {
                                               if (!e.target.value) return;
-                                              const [sIdx, dIdx] =
-                                                e.target.value.split("_");
+                                              const sIdx = parseInt(e.target.value);
+                                              const docName = t.customName || t.originalName || "Tài liệu mới";
                                               setProjectStages((prev) => {
-                                                const next = JSON.parse(
-                                                  JSON.stringify(prev),
-                                                );
-                                                next[currentProjectId][
-                                                  sIdx
-                                                ].docs[dIdx].templateId = t.id;
+                                                const next = JSON.parse(JSON.stringify(prev));
+                                                next[currentProjectId][sIdx].docs.push({
+                                                  id: "d_" + Date.now(),
+                                                  name: docName,
+                                                  status: "Chưa soạn",
+                                                  templateId: t.id,
+                                                });
                                                 return next;
                                               });
                                               e.target.value = "";
@@ -917,29 +918,14 @@ const ProcessModal = ({
                                             <option value="" className="bg-slate-800 text-slate-200">
                                               👉 Gắn vào mục...
                                             </option>
-                                            {(
-                                              projectStages[currentProjectId] ||
-                                              []
-                                            ).map((st, sid) => (
-                                              <optgroup
+                                            {(projectStages[currentProjectId] || []).map((st, sid) => (
+                                              <option
                                                 key={st.id}
-                                                label={st.name}
-                                                className="bg-[#0A0D14]/40 backdrop-blur-xl text-white"
+                                                value={sid}
+                                                className="bg-slate-800 text-slate-200"
                                               >
-                                                {st.docs?.map((d, did) => (
-                                                  <option
-                                                    key={d.id}
-                                                    value={sid + "_" + did}
-                                                    disabled={!!d.templateId}
-                                                    className="bg-slate-800 text-slate-200"
-                                                  >
-                                                    {d.name}{" "}
-                                                    {d.templateId
-                                                      ? "(Đã đầy)"
-                                                      : ""}
-                                                  </option>
-                                                ))}
-                                              </optgroup>
+                                                {st.name}
+                                              </option>
                                             ))}
                                           </select>
                                         </div>
