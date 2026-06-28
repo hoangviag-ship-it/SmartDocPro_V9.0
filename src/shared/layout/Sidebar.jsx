@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import {
   LayoutDashboard,
@@ -6,7 +6,6 @@ import {
   History,
   FileCode2,
   Database,
-  Bell,
   User,
   FolderPlus,
   GitMerge,
@@ -27,6 +26,27 @@ const Sidebar = () => {
   const toggleDarkMode = useAppStore((state) => state.toggleDarkMode);
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
+  const [storagePercent, setStoragePercent] = useState(0);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('sde_auth_v2');
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data.exp && data.exp > Date.now()) setAuthUser(data);
+      }
+    } catch { /* skip */ }
+
+    try {
+      let total = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        total += key.length + (localStorage.getItem(key) || '').length;
+      }
+      setStoragePercent(Math.min(100, Math.round((total / (5 * 1024 * 1024)) * 100)));
+    } catch { /* skip */ }
+  }, []);
 
   const menuItems = [
     { id: 'workspace', label: 'Bảng làm việc', icon: LayoutDashboard },
@@ -132,30 +152,38 @@ const Sidebar = () => {
 
       {/* Bottom user area */}
       <div className="px-2 pb-2 pt-3 border-t border-slate-800/50 shrink-0">
-        <div className="flex items-center gap-3 px-1">
-          {/* Avatar */}
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center shrink-0">
-            <User className="w-4 h-4 text-white" />
-          </div>
-          {/* User info */}
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <span className="text-sm font-semibold text-slate-200 whitespace-nowrap">Admin</span>
-            <span className="text-[10px] text-slate-500 whitespace-nowrap">Hoạt động offline</span>
-          </div>
-          {/* Actions (only when expanded) */}
-          <div className="flex items-center gap-0.5 shrink-0">
-            <button
-              onClick={toggleDarkMode}
-              className="p-1.5 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
-              title={isDarkMode ? 'Light Mode' : 'Dark Mode'}
-            >
-              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button className="relative p-1.5 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-pink-500 rounded-full" />
-            </button>
-          </div>
+        <div className="flex items-center gap-2 px-1">
+          {/* Account → mở trung tâm Cài đặt hệ thống */}
+          <button
+            onClick={() => triggerAppAction('SETTINGS')}
+            title="Mở Cài đặt & Tài khoản"
+            className="flex items-center gap-3 flex-1 min-w-0 rounded-lg px-1 py-1 hover:bg-slate-800/60 transition-colors text-left"
+          >
+            {/* Avatar */}
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center shrink-0 overflow-hidden">
+              {authUser?.picture
+                ? <img src={authUser.picture} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                : <User className="w-4 h-4 text-white" />
+              }
+            </div>
+            {/* User info */}
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <span className="text-sm font-semibold text-slate-200 whitespace-nowrap truncate">
+                {authUser?.name || 'Chưa đăng nhập'}
+              </span>
+              <span className={`text-[10px] whitespace-nowrap ${authUser ? 'text-emerald-500' : 'text-slate-500'}`}>
+                {authUser ? '● Đã đồng bộ cloud' : '○ Chưa đăng nhập'}
+              </span>
+            </div>
+          </button>
+          {/* Dark mode toggle */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-1.5 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-colors shrink-0"
+            title={isDarkMode ? 'Light Mode' : 'Dark Mode'}
+          >
+            {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
         </div>
 
         {/* Storage bar — only when expanded */}
@@ -163,11 +191,14 @@ const Sidebar = () => {
           <div className="mt-2 px-1">
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-[10px] text-slate-500 font-medium">Dung lượng</span>
-                <span className="text-[10px] text-slate-600">Local Storage</span>
+                <span className="text-[10px] text-slate-500 font-medium">LocalStorage</span>
+                <span className="text-[10px] text-slate-400">{storagePercent}% / 5MB</span>
               </div>
               <div className="w-full bg-slate-950 h-1 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-500 w-1/3 h-full rounded-full" />
+                <div
+                  className={`h-full rounded-full ${storagePercent > 80 ? 'bg-red-500' : 'bg-gradient-to-r from-indigo-500 to-purple-500'}`}
+                  style={{ width: `${storagePercent || 1}%` }}
+                />
               </div>
             </div>
           </div>

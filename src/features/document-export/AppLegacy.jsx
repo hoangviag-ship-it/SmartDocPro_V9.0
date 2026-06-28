@@ -7,6 +7,7 @@ const VariablesLibraryModal = React.lazy(() => import("./components/Modals/Varia
 import { inferVariableType, resolveSynonym, formatCurrency } from "./utils/variableUtils";
 import ReactDOM from "react-dom/client";
 import { validateTagName } from "./utils/tagUtils";
+import { getUsableLocalDir, rememberLocalDir } from "./utils/localDir";
 
 import {
   sanitizePath,
@@ -2205,6 +2206,7 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
     setColumnMapping(function (prev) {
       var newMapping = Object.assign({}, prev);
       var mappedCount = 0;
+      var keptManual = []; // biến người dùng đã NHẬP TAY (có giá trị) bị trùng cột Excel
       var colUsedMap = {};
       Object.keys(newMapping).forEach(function (k) {
         if (
@@ -2219,10 +2221,14 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
       });
 
       tags.forEach(function (tag) {
+        var existing = newMapping[tag];
+        // Biến đã nhập tay và CÓ giá trị -> dữ liệu do người dùng tự gõ, cần bảo vệ.
+        var isFilledManual =
+          existing && existing.type === "manual" && existing.value !== "";
         if (
-          !newMapping[tag] ||
-          newMapping[tag].value === "" ||
-          newMapping[tag].type === "manual"
+          !existing ||
+          existing.value === "" ||
+          existing.type === "manual"
         ) {
           // Try Vietnamese-aware match first
           var bestCol = null;
@@ -2237,10 +2243,15 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
 
           // If we found a match with confidence >= 0.5
           if (bestCol && bestScore >= 0.5) {
-            newMapping[tag] = { type: "excel", value: bestCol };
-            mappedCount++;
-            colUsedMap[bestCol] = [tag];
-          } else if (!newMapping[tag]) {
+            if (isFilledManual) {
+              // KHÔNG ghi đè giá trị nhập tay — chỉ ghi nhận để thông báo cho người dùng.
+              keptManual.push(tag);
+            } else {
+              newMapping[tag] = { type: "excel", value: bestCol };
+              mappedCount++;
+              colUsedMap[bestCol] = [tag];
+            }
+          } else if (!existing) {
             newMapping[tag] = { type: "manual", value: "" };
           }
         }
@@ -2251,6 +2262,15 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
           "Đã tự động ghép nối thành công " +
             mappedCount +
             " biến nhờ thuật toán đối soát!",
+        );
+      if (keptManual.length > 0)
+        showToast(
+          "⚠️ Giữ nguyên " +
+            keptManual.length +
+            " biến bạn đã NHẬP TAY (không ghi đè bằng cột Excel trùng tên): " +
+            keptManual.join(", ") +
+            ". Vào ô tương ứng chọn cột Excel nếu muốn dùng dữ liệu mới.",
+          "warning",
         );
       return newMapping;
     });
@@ -3925,9 +3945,15 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         );
       } else {
         try {
-          localDirHandle = await window.showDirectoryPicker({
-            mode: "readwrite",
-          });
+          // Ưu tiên thư mục đã ghi nhớ (Cài đặt → Hệ thống); nếu chưa có/từ chối
+          // quyền thì mở hộp chọn và ghi nhớ lại cho lần sau.
+          localDirHandle = await getUsableLocalDir();
+          if (!localDirHandle) {
+            localDirHandle = await window.showDirectoryPicker({
+              mode: "readwrite",
+            });
+            await rememberLocalDir(localDirHandle);
+          }
         } catch (err) {
           showToast("Đã hủy chọn thư mục đầu ra", "error");
           return;
@@ -5390,8 +5416,6 @@ function AppContent({ authUser, setAuthUser, isEmbedded }) {
         setIsFullScreen={setIsFullScreen}
         screenResolution={screenResolution}
         setScreenResolution={setScreenResolution}
-        exportMode={exportMode}
-        setExportMode={setExportMode}
         storeExportSubFolderPattern={storeExportSubFolderPattern}
         setStoreExportSubFolderPattern={setStoreExportSubFolderPattern}
         storeEnableHighlight={storeEnableHighlight}

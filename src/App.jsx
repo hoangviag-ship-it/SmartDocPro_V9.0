@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import MainLayout from './shared/layout/MainLayout';
 import AppLegacy from './features/document-export/AppLegacy';
 import { useAppStore } from './shared/store/useAppStore';
+import SyncProvider from './shared/sync/SyncProvider';
 
 function App() {
-  const isFullScreen = useAppStore((state) => state.isFullScreen);
   const isDarkMode = useAppStore((state) => state.isDarkMode);
 
   useEffect(() => {
@@ -16,15 +16,13 @@ function App() {
   }, [isDarkMode]);
 
   return (
-    <MainLayout>
-      {/* 
-        Tạm thời bọc toàn bộ logic cũ (11.000 dòng) vào đây.
-        Bên trong AppLegacy, mình sẽ dùng CSS ẩn đi Sidebar cũ để nó hiển thị mượt mà bên trong MainLayout mới.
-      */}
-      <div className="h-full w-full relative overflow-hidden">
-        <AppLegacy isEmbedded={true} />
-      </div>
-    </MainLayout>
+    <SyncProvider>
+      <MainLayout>
+        <div className="h-full w-full relative overflow-hidden">
+          <AppLegacy isEmbedded={true} />
+        </div>
+      </MainLayout>
+    </SyncProvider>
   );
 }
 
