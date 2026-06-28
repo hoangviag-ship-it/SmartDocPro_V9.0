@@ -14,7 +14,7 @@ const AddStageModal = ({
   return (
     <>
       {isAddStageModalOpen && (
-                <div className="fixed inset-0 z-[140] flex items-center justify-center p-4 bg-[#0A0D14]/40 backdrop-blur-xl/90 backdrop-blur-sm animate-fade-in">
+                <div className="fixed inset-0 z-[165] flex items-center justify-center p-4 bg-[#0A0D14]/40 backdrop-blur-xl/90 backdrop-blur-sm animate-fade-in">
                   <div className="bg-[#0A0D14]/40 backdrop-blur-xl border border-slate-700/50 shadow-lg rounded-2xl w-full max-w-lg shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-700 flex flex-col">
                     <div className="flex justify-between items-center px-6 py-4 border-b border-slate-700/50 shadow-lg bg-[#0A0D14]/40 backdrop-blur-xl rounded-t-2xl shrink-0">
                       <h3 className="text-sm font-black text-emerald-400 uppercase tracking-wide flex items-center gap-2">
